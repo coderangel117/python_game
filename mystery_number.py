@@ -16,28 +16,31 @@ def display_menu():
 
 def mystery_number():
     win = 0
-    while win != 1:
+    counter = 0
+    fail_counter = False
+    while win == 0 & fail_counter != True:
         user_number = 0
         number_min: int = 1
         number_max: int = 100
         random_number = random.randint(number_min, number_max)
-        print('user_number', user_number, 'random_number', random_number)
-        while user_number != random_number:
+        while user_number != random_number | fail_counter != True | win != -1:
             user_number = input(f"Entrez un nombre entre {number_min} et {number_max}\n")
-            print(random_number)
+            if user_number == 0:
+                win = -1
+                break
             user_number = int(user_number)
             if user_number == random_number:
-                print('user_number', user_number, 'random_number', random_number)
                 win = 1
                 break
-            elif user_number > random_number:
+            if user_number > random_number:
                 print('Trop grand')
-                user_number = input(f"Entrez un nombre entre {number_min} et {number_max}\n")
-            elif user_number < random_number:
+            if user_number < random_number:
                 print('trop petit')
-                user_number = input(f"Entrez un nombre entre {number_min} et {number_max}\n")
-            print("user_number = ", user_number)
-    print("win", win)
+            counter += 1
+            if counter > 15:
+                fail_counter = True
+                win = -1
+            print(counter)
     return win
 
 
@@ -47,7 +50,7 @@ def replay():
         answer = int(input(
             '''voulez vous rejouer ?
             [1] - Yes, let's go !
-            [2] - No, Exit please'''))
+            [2] - No, Exit please\n'''))
     return answer
 
 
@@ -56,6 +59,16 @@ def main():
     if user_choice == 1:
         win = mystery_number()
         if win == 1:
+            choice_replay = replay()
+            while choice_replay == 1:
+                if int(choice_replay) == 1:
+                    mystery_number()
+                    choice_replay = replay()
+            else:
+                print("Au revoir et à bientôt")
+                exit()
+        elif win == -1:
+            print('You loose')
             choice_replay = replay()
             while choice_replay == 1:
                 if int(choice_replay) == 1:
