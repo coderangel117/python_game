@@ -15,6 +15,7 @@ def display_menu():
 
 
 def mystery_number():
+    return_table =[]
     win = 0
     counter = 0
     fail_counter = False
@@ -30,6 +31,7 @@ def mystery_number():
                 break
             user_number = int(user_number)
             if user_number == random_number:
+                counter +=1
                 win = 1
                 break
             if user_number > random_number:
@@ -37,11 +39,13 @@ def mystery_number():
             if user_number < random_number:
                 print('trop petit')
             counter += 1
-            if counter > 15:
+            if counter > 5:
                 fail_counter = True
                 win = -1
             print(counter)
-    return win
+    return_table.append(win)
+    return_table.append(counter)
+    return return_table
 
 
 def replay():
@@ -57,8 +61,9 @@ def replay():
 def main():
     user_choice = int(display_menu())
     if user_choice == 1:
-        win = mystery_number()
-        if win == 1:
+        return_table = mystery_number()
+        if return_table[0] == 1:
+            print(f"You won with {return_table[1]} attempts")
             choice_replay = replay()
             while choice_replay == 1:
                 if int(choice_replay) == 1:
@@ -67,8 +72,8 @@ def main():
             else:
                 print("Au revoir et à bientôt")
                 exit()
-        elif win == -1:
-            print('You loose')
+        elif return_table[0] == -1:
+            print(f"You loose with {return_table[1]} attempts")
             choice_replay = replay()
             while choice_replay == 1:
                 if int(choice_replay) == 1:
