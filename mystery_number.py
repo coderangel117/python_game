@@ -3,6 +3,7 @@ import random
 
 # @TODO ==> add project CASINO in notion (with multiples games (chosen in a menu))
 # @TODO ==> add project hyrule castle in python in notion (check if possible before)
+# @TODO ==> Add in this project username and nb won / lose game in a table (disply ina function statistics)
 def display_menu():
     answer = 0
     while answer != 1 and answer != 2:
@@ -15,7 +16,7 @@ def display_menu():
 
 
 def mystery_number():
-    return_table =[]
+    return_table = []
     win = 0
     counter = 0
     fail_counter = False
@@ -31,7 +32,7 @@ def mystery_number():
                 break
             user_number = int(user_number)
             if user_number == random_number:
-                counter +=1
+                counter += 1
                 win = 1
                 break
             if user_number > random_number:
@@ -48,7 +49,7 @@ def mystery_number():
     return return_table
 
 
-def replay():
+def replay_menu():
     answer = 0
     while answer != 1 and answer != 2:
         answer = int(input(
@@ -58,29 +59,27 @@ def replay():
     return answer
 
 
+def check_win(table):
+    if table[0] == 1:
+        print(f"You won with {table[1]} attempts")
+        return True
+    else:
+        print('You loose because you doesn\'t find the number before the last attempt')
+        return False
+
+
 def main():
     user_choice = int(display_menu())
     if user_choice == 1:
         return_table = mystery_number()
-        if return_table[0] == 1:
-            print(f"You won with {return_table[1]} attempts")
-            choice_replay = replay()
-            while choice_replay == 1:
-                if int(choice_replay) == 1:
-                    mystery_number()
-                    choice_replay = replay()
+        check_win(return_table)
+        choice_replay = replay_menu()
+        while choice_replay == 1:
+            if int(choice_replay) == 1:
+                table = mystery_number()
+                check_win(table)
+                choice_replay = replay_menu()
             else:
-                print("Au revoir et à bientôt")
-                exit()
-        elif return_table[0] == -1:
-            print(f"You loose with {return_table[1]} attempts")
-            choice_replay = replay()
-            while choice_replay == 1:
-                if int(choice_replay) == 1:
-                    mystery_number()
-                    choice_replay = replay()
-            else:
-                print("Au revoir et à bientôt")
                 exit()
     else:
         print("Au revoir et à bientôt")
