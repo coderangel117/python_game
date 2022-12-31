@@ -155,4 +155,4 @@ def loop_usermanager(choice: int):
             delete_user(username)
             choice = users_menu()
         if choice == 6:
-            main_menu()
+            return "main"

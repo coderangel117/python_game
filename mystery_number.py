@@ -157,8 +157,9 @@ def main():
         loop_replay(choice_replay)
     elif user_choice == 2:
         choice = users_menu()
-        user_manager.loop_usermanager(choice)
-
+        return_user = user_manager.loop_usermanager(choice)
+        if return_user == 'main':
+            main()
     else:
         print("Au revoir et à bientôt")
         exit()
