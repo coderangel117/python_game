@@ -52,20 +52,30 @@ def users_menu():
 
 def mystery_number():
     return_table = []
-    win = 0
-    counter = 0
-    fail_counter = False
+    win = 0  # When user finds the great number
+    counter = 0  # The user's attempt count
+    force_counter = 0  # Increment when user doesn't respect game's instructions
+    fail_counter = False  # Become True when user has exceeded max attempts
     while win == 0 & fail_counter != True:
         user_number = 0
         number_min: int = 1
         number_max: int = 100
         random_number = random.randint(number_min, number_max)
-        while user_number != random_number | fail_counter != True | win != -1:
+        while user_number != random_number | fail_counter != True | win != -1 | win != -2:
+            # @TODO Add regex to catch error when user type specials characters
             user_number = input(f"Entrez un nombre entre {number_min} et {number_max}\n")
-            if user_number == 0:
-                win = -1
+            if user_number == "":
+                print("Type something ....")
                 break
             user_number = int(user_number)
+            if user_number == 0 or user_number > number_max or user_number < number_min:
+                if force_counter >= 5:
+                    win = -2
+                    break
+                else:
+                    print('Les consignes sont simples ....')
+                    force_counter += 1
+                    break
             if user_number == random_number:
                 counter += 1
                 win = 1
@@ -78,20 +88,9 @@ def mystery_number():
             if counter > 5:
                 fail_counter = True
                 win = -1
-            print(counter)
     return_table.append(win)
     return_table.append(counter)
     return return_table
-
-
-def replay_menu():
-    answer = 0
-    while answer != 1 and answer != 2:
-        answer = int(input(
-            '''voulez vous rejouer ?
-            [1] - Yes, let's go !
-            [2] - No, Exit please\n'''))
-    return answer
 
 
 def check_win(table):
@@ -104,7 +103,7 @@ def check_win(table):
     if table[0] == 1:
         print(f"You won with {table[1]} attempts")
         return True
-    else:
+    elif table[0] == -1:
         print('You loose because you doesn\'t find the number before the last attempt')
         return False
     elif table[0] == -2:
