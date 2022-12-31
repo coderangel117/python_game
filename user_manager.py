@@ -1,12 +1,16 @@
 import glob
 import json
 import os
-import random
+
 from User import User
-from mystery_number import users_menu, main_menu
+from mystery_number import users_menu
 
 
 def get_all_users():
+    """
+    return all user in users.json
+    :return:
+    """
     users = get_user_files()
     merge_json_files(users)
     with open('users.json') as users:
@@ -15,11 +19,15 @@ def get_all_users():
             for p in tab:
                 print(p['username'])
         else:
-            print("Il n' y a pas d'utilisateur dans la liste")
+            print("There are no user in this list ")
     # Parcours du fichier users.json
 
 
 def get_user_files():
+    """
+    create a string array with all json file name
+    :return:
+    """
     users = []
     for file in glob.glob("*.json"):
         users.append(file)
@@ -63,7 +71,7 @@ def delete_user(username: str):
         os.remove(filename)
         get_all_users()
     else:
-        print('cet utilisateur n\existe pas')
+        print("This user doesn't exist")
 
 
 def update_user(username, new_username):
@@ -92,10 +100,10 @@ def find_user(username: str):
     :return: boolean
     """
     if get_user_files().__contains__(username + '.json'):
-        print('cet utilisateur existe bien dans la liste')
+        print("This user exist in the list")
         return True
     else:
-        print('Cet utilisateur n\'existe pas ')
+        print("This user doesn't exist")
         return False
 
 

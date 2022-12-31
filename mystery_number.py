@@ -45,7 +45,7 @@ def replay_menu():
     answer = 0
     while answer != 1 and answer != 2:
         answer = input(
-            '''voulez vous rejouer ?
+            '''Would you replay ?
             [1] - Yes, let's go !
             [2] - No, exit please\n''')
         if not check_special_characters(answer):
@@ -130,8 +130,7 @@ def check_win(table):
         print(f"You won with {table[1]} attempts")
         return True
     elif table[0] == -1:
-        # print('You loose because you doesn\'t find the number before the last attempt')
-        print('Tu as perdu car tu n\'a pas réussi à deviner ')
+        print('You loose because you doesn\'t find the number before the last attempt')
         return False
     elif table[0] == -2:
         print('You loose because you are a monkey')
@@ -161,7 +160,7 @@ def main():
         if return_user == 'main':
             main()
     else:
-        print("Au revoir et à bientôt")
+        print("Bye")
         exit()
 
 
