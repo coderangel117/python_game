@@ -3,7 +3,7 @@ import json
 import os
 import random
 from User import User
-from mystery_number import users_menu
+from mystery_number import users_menu, main_menu
 
 
 def get_all_users():
@@ -125,7 +125,7 @@ def merge_json_files(filename):
 
 
 def loop_usermanager(choice: int):
-    while choice != 6:
+    while choice != 0:
         if choice == 1:
             get_all_users()
             choice = users_menu()
@@ -155,4 +155,4 @@ def loop_usermanager(choice: int):
             delete_user(username)
             choice = users_menu()
         if choice == 6:
-            return False
+            main_menu()

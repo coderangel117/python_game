@@ -1,5 +1,20 @@
 import random
+import re
+
 import user_manager
+
+
+#  @TODO Permit to play in another languages (fr and en)
+def check_special_characters(userinput: str):
+    regex = re.compile('[@.€ç_!#$%^&*()<>\' \'?\"/\|}{~:A-z]')
+    if regex.search(userinput) is not None:
+        print("Only number please")
+        return False
+    elif userinput == "":
+        print("Type something ....")
+        return False
+    else:
+        return True
 
 
 def main_menu():
@@ -9,12 +24,16 @@ def main_menu():
     """
     answer = 0
     while answer != 1 and answer != 2 and answer != 3:
-        answer = int(input(
+        answer = input(
             """
             [1] - Start the game   
             [2] - Manage users
             [3] - Exit the game
-            """))
+            """)
+        if not check_special_characters(answer):
+            answer = 0
+        else:
+            answer = int(answer)
     return answer
 
 
@@ -25,10 +44,13 @@ def replay_menu():
     """
     answer = 0
     while answer != 1 and answer != 2:
-        answer = int(input(
+        answer = input(
             '''voulez vous rejouer ?
             [1] - Yes, let's go !
-            [2] - No, exit please'''))
+            [2] - No, exit please\n''')
+        if not check_special_characters(answer):
+            answer = 0
+        answer = int(answer)
     return answer
 
 
@@ -39,14 +61,17 @@ def users_menu():
     """
     manage_choice = 0
     while manage_choice != 1 and manage_choice != 2 and manage_choice != 3 and manage_choice != 4 and manage_choice != 5 and manage_choice != 6:
-        manage_choice = int(input('''
+        manage_choice = input('''
         [1] - Display users list    
         [2] - Search a specific user    
         [3] - Create a new user
         [4] - Update user info
         [5] - Delete a user
         [6] - return to main menu
-        '''))
+        ''')
+        if not check_special_characters(manage_choice):
+            manage_choice = 0
+        manage_choice = int(manage_choice)
     return manage_choice
 
 
@@ -62,8 +87,9 @@ def mystery_number():
         number_max: int = 100
         random_number = random.randint(number_min, number_max)
         while user_number != random_number | fail_counter != True | win != -1 | win != -2:
-            # @TODO Add regex to catch error when user type specials characters
-            user_number = input(f"Entrez un nombre entre {number_min} et {number_max}\n")
+            user_number = input(f"Type a number between {number_min} and {number_max}\n")
+            if not check_special_characters(user_number):
+                break
             if user_number == "":
                 print("Type something ....")
                 break
@@ -73,7 +99,7 @@ def mystery_number():
                     win = -2
                     break
                 else:
-                    print('Les consignes sont simples ....')
+                    print(f"It's between {number_min} and {number_max} ....")
                     force_counter += 1
                     break
             if user_number == random_number:
@@ -81,9 +107,9 @@ def mystery_number():
                 win = 1
                 break
             if user_number > random_number:
-                print('Trop grand')
+                print('Your number is bigger than the mystery number')
             if user_number < random_number:
-                print('trop petit')
+                print('Your number is smaller than the mystery number')
             counter += 1
             if counter > 5:
                 fail_counter = True
@@ -104,7 +130,8 @@ def check_win(table):
         print(f"You won with {table[1]} attempts")
         return True
     elif table[0] == -1:
-        print('You loose because you doesn\'t find the number before the last attempt')
+        # print('You loose because you doesn\'t find the number before the last attempt')
+        print('Tu as perdu car tu n\'a pas réussi à deviner ')
         return False
     elif table[0] == -2:
         print('You loose because you are a monkey')
@@ -112,7 +139,7 @@ def check_win(table):
 
 
 def loop_replay(choice: int):
-    while choice != 3:
+    while choice != 2 | choice != 0:
         if int(choice) == 1:
             table = mystery_number()
             check_win(table)
