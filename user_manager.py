@@ -66,8 +66,23 @@ def delete_user(username: str):
         print('cet utilisateur n\existe pas')
 
 
-def update_user():
-    pass
+def update_user(username, new_username):
+    if find_user(username):
+        file_name = username + '.json'
+        new_file_name = new_username + '.json'
+        with open(file_name, 'r+') as f:
+            data = json.load(f)
+            data['username'] = new_username  # <--- change `username` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=2)
+            f.truncate()  # remove remaining part
+        os.rename(file_name, new_file_name)
+        users = get_user_files()
+        merge_json_files(users)
+        get_all_users()
+        print(f" The username {username} has been changed to {new_username}")
+    else:
+        print('npquoi')
 
 
 def find_user(username: str):
@@ -144,7 +159,16 @@ def loop_usermanager(choice: int):
             new_user(username)
             choice = users_menu()
         if choice == 4:
-            update_user()
+            get_all_users()
+            username = input(
+                '''
+                Type user's username you want to change
+                ''')
+            new_username = input(
+                '''
+                Type the new username 
+                ''')
+            update_user(username, new_username)
             choice = users_menu()
         if choice == 5:
             get_all_users()
