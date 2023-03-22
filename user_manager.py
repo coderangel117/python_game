@@ -3,7 +3,7 @@ import json
 import os
 
 from User import User
-from mystery_number import users_menu
+from main import users_menu
 
 
 def get_all_users():
@@ -90,7 +90,8 @@ def update_user(username, new_username):
         get_all_users()
         print(f" The username {username} has been changed to {new_username}")
     else:
-        print('npquoi')
+        pass
+    print('The username you have entered was not found')
 
 
 def find_user(username: str):
