@@ -1,9 +1,15 @@
 import user_manager
-from games import mystery_number
+from mystery_number import mystery_number
 from utils import check_special_characters
 
 
-#  @TODO Permit to play in another languages (fr and en)
+#   @TODO Permit to play in another languages (fr and en)
+#   @TODO Add a game menu to select which game the user wants to play
+#   @TODO Add different level ( easy, normal, hard)
+#   @TODO Add a great score list per game ( the same for fails and wins )
+#   @TODO Display the number of laps remaining before failure
+#   @TODO Add a menu to choose his player
+
 
 def main_menu():
     """
@@ -63,6 +69,35 @@ def users_menu():
     return manage_choice
 
 
+def games_menu():
+    """
+        Display users' manager menu
+        :return: int
+        """
+    manage_choice = 0
+    while manage_choice != 1 and manage_choice != 2 and manage_choice != 3 and manage_choice != 4 and manage_choice != 5 and manage_choice != 6:
+        manage_choice = input('''
+            [1] - Mystery number
+            [2] - return to main menu
+            ''')
+        if not check_special_characters(manage_choice):
+            manage_choice = 0
+        manage_choice = int(manage_choice)
+    return manage_choice
+
+
+def loop_choosegame(choice: int):
+    while choice != 0:
+        if choice == 1:
+            choice = mystery_number()
+            return_table = mystery_number()
+            check_win(return_table)
+            choice_replay = replay_menu()
+            loop_replay(choice_replay)
+        if choice == 2:
+            return "main"
+
+
 def check_win(table):
     """
     Check and return true if user wins
@@ -94,10 +129,10 @@ def loop_replay(choice: int):
 def main():
     user_choice = int(main_menu())
     if user_choice == 1:
-        return_table = mystery_number()
-        check_win(return_table)
-        choice_replay = replay_menu()
-        loop_replay(choice_replay)
+        choice = games_menu()
+        return_user = loop_choosegame(choice)
+        if return_user == 'main':
+            main()
     elif user_choice == 2:
         choice = users_menu()
         return_user = user_manager.loop_usermanager(choice)

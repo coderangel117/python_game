@@ -2,7 +2,7 @@ import re
 
 
 def check_special_characters(userinput: str):
-    regex = re.compile('[@.€ç_!#$%^&*()<>\' \'?\"/\|}{~:A-z]')
+    regex = re.compile('[@.€ç_!#$%^&*()<>\' \'?\"/\\|}{~:A-z]')
     if regex.search(userinput) is not None:
         print("Only number please")
         return False
@@ -11,4 +11,3 @@ def check_special_characters(userinput: str):
         return False
     else:
         return True
-

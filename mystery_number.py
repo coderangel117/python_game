@@ -9,12 +9,12 @@ def mystery_number():
     counter = 0  # The user's attempt count
     force_counter = 0  # Increment when user doesn't respect game's instructions
     fail_counter = False  # Become True when user has exceeded max attempts
-    while win == 0 & fail_counter != True:
+    while win == 0 & fail_counter is not True:
         user_number = 0
         number_min: int = 1
         number_max: int = 100
         random_number = random.randint(number_min, number_max)
-        while user_number != random_number | fail_counter != True | win != -1 | win != -2:
+        while user_number != random_number | fail_counter is not True | win != -1 | win != -2:
             user_number = input(f"Type a number between {number_min} and {number_max}\n")
             if not check_special_characters(user_number):
                 break
@@ -45,4 +45,3 @@ def mystery_number():
     return_table.append(win)
     return_table.append(counter)
     return return_table
-

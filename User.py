@@ -10,7 +10,7 @@ class User:
         self.nbwin = nbwin
 
     def tostring(self):
-        return f" le user {self.username} possède {self.nbfail} défaites et {self.nbwin} victoires son meilleur score est de {self.greatest_score}"
+        return f" le user {self.username} has {self.nbfail} fails et {self.nbwin} wons"
 
     def getusername(self):
         return self.username
