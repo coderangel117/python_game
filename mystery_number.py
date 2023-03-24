@@ -39,9 +39,15 @@ def mystery_number():
             if user_number < random_number:
                 print('Your number is smaller than the mystery number')
             counter += 1
-            if counter > 5:
+            if counter == 5:
                 fail_counter = True
                 win = -1
-    return_table.append(win)
-    return_table.append(counter)
-    return return_table
+    if win == 1:
+        print(f"You won with {counter} attempts")
+        return True
+    elif win == -1:
+        print('You loose because you doesn\'t find the number before the last attempt')
+        return False
+    elif win == -2:
+        print('You loose because you are a monkey')
+        return False
