@@ -3,7 +3,7 @@ import json
 import os
 
 from User import User
-from main import users_menu
+from utils import check_special_characters
 
 
 def get_all_users():
@@ -148,44 +148,60 @@ def merge_json_files(filename):
         json.dump(result, output_file, indent=2)
 
 
-def loop_usermanager(choice: int):
-    while choice != 0:
-        if choice == 1:
+def users_menu():
+    """
+    Display users' manager menu and execute function with user's choice  or return to main menu
+    :return: int
+    """
+    manage_choice = 0
+    while manage_choice != 1 and manage_choice != 2 and manage_choice != 3 and manage_choice != 4 and manage_choice != 5 and manage_choice != 6:
+        manage_choice = input('''
+        [1] - Display users list    
+        [2] - Search a specific user    
+        [3] - Create a new user
+        [4] - Update user info
+        [5] - Delete a user
+        [6] - return to main menu
+        ''')
+        if not check_special_characters(manage_choice):
+            manage_choice = 0
+        manage_choice = int(manage_choice)
+        if manage_choice == 1:
             get_all_users()
-            choice = users_menu()
-        if choice == 2:
-            user = input(
-                '''
-                Type user's username who want
-                ''')
-            find_user(user)
-            choice = users_menu()
-        if choice == 3:
-            username = input(
-                '''
-                Type new user's username you want
-                ''')
-            new_user(username)
-            choice = users_menu()
-        if choice == 4:
-            get_all_users()
-            username = input(
-                '''
-                Type user's username you want to change
-                ''')
-            new_username = input(
-                '''
-                Type the new username 
-                ''')
-            update_user(username, new_username)
-            choice = users_menu()
-        if choice == 5:
-            get_all_users()
-            username = input(
-                '''
-                Type user's username who want
-                ''')
-            delete_user(username)
-            choice = users_menu()
-        if choice == 6:
-            return "main"
+            manage_choice = users_menu()
+    if manage_choice == 2:
+        user = input(
+            '''
+            Type user's username who want
+            ''')
+        find_user(user)
+        manage_choice = users_menu()
+    if manage_choice == 3:
+        username = input(
+            '''
+            Type new user's username you want
+            ''')
+        new_user(username)
+        manage_choice = users_menu()
+    if manage_choice == 4:
+        get_all_users()
+        username = input(
+            '''
+            Type user's username you want to change
+            ''')
+        new_username = input(
+            '''
+            Type the new username 
+            ''')
+        update_user(username, new_username)
+        manage_choice = users_menu()
+    if manage_choice == 5:
+        get_all_users()
+        username = input(
+            '''
+            Type user's username who want
+            ''')
+        delete_user(username)
+        manage_choice = users_menu()
+    if manage_choice == 6:
+        return "main"
