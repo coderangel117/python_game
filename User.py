@@ -1,16 +1,15 @@
 class User:
 
-    def __init__(self, username: str, greatest_score: int = 0, great_score=None, nbfail: int = 0, nbwin: int = 0) -> None:
-        if great_score is None:
-            great_score = []
+    def __init__(self, username: str, greatest_score=None, nbfail: int = 0, nbwin: int = 0) -> None:
+        if greatest_score is None:
+            greatest_score = []
         self.username = username
         self.greatest_score = greatest_score
-        self.great_score = great_score
         self.nbfail = nbfail
         self.nbwin = nbwin
 
     def tostring(self):
-        return f" le user {self.username} has {self.nbfail} fails et {self.nbwin} wons"
+        return f" User {self.username} has {self.nbfail} fails et {self.nbwin} wons"
 
     def getusername(self):
         return self.username

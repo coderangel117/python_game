@@ -3,7 +3,7 @@ import random
 from utils import check_special_characters
 
 
-def mystery_number():
+def mystery_number(player: str):
     return_table = []
     win = 0  # When user finds the great number
     counter = 0  # The user's attempt count
@@ -44,4 +44,5 @@ def mystery_number():
                 win = -1
     return_table.append(win)
     return_table.append(counter)
-    return return_table
+    return_table.append(player)
+    print(return_table)

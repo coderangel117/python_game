@@ -19,7 +19,8 @@ def get_all_users():
             for p in tab:
                 print(p['username'])
         else:
-            print("There are no user in this list ")
+            new_user('invite')
+    return users
     # Parcours du fichier users.json
 
 
@@ -54,14 +55,17 @@ def new_user(username):
     return user
 
 
-def get_user_info(user: User):
+def get_user_info(username: str):
     """
     return user.tostring
+    :param username:
     :param user:
     :return:str
     """
-    return user.tostring()
-    pass
+    file_name = username + '.json'
+    with open(file_name, 'r+') as f:
+        data = json.load(f)
+        print(f" User {data['username']} has {data['nbfail']} fails et {data['nbwin']} wons")
 
 
 def delete_user(username: str):
@@ -74,7 +78,8 @@ def delete_user(username: str):
         print("This user doesn't exist")
 
 
-def update_user(username, new_username):
+def update_username(username, new_username):
+    get_all_users()
     if find_user(username):
         file_name = username + '.json'
         new_file_name = new_username + '.json'
@@ -90,8 +95,33 @@ def update_user(username, new_username):
         get_all_users()
         print(f" The username {username} has been changed to {new_username}")
     else:
-        pass
-    print('The username you have entered was not found')
+        print('The username you have entered was not found')
+
+
+def add_win(username):
+    if find_user(username):
+        file_name = username + '.json'
+        with open(file_name, 'r+') as f:
+            data = json.load(f)
+            data['nbwin'] += 1  # <--- change `username` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=2)
+            f.truncate()  # remove remaining part
+        users = get_user_files()
+        merge_json_files(users)
+
+
+def add_fail(username):
+    if find_user(username):
+        file_name = username + '.json'
+        with open(file_name, 'r+') as f:
+            data = json.load(f)
+            data['nbfail'] += 1  # <--- change `username` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=2)
+            f.truncate()  # remove remaining part
+        users = get_user_files()
+        merge_json_files(users)
 
 
 def find_user(username: str):
@@ -143,7 +173,6 @@ def merge_json_files(filename):
     for f1 in filename:
         with open(f1, 'r') as infile:
             result.append(json.load(infile))
-
     with open('users.json', 'w') as output_file:
         json.dump(result, output_file, indent=2)
 
@@ -154,14 +183,15 @@ def users_menu():
     :return: int
     """
     manage_choice = 0
-    while manage_choice != 1 and manage_choice != 2 and manage_choice != 3 and manage_choice != 4 and manage_choice != 5 and manage_choice != 6:
+    while manage_choice != 1 and manage_choice != 2 and manage_choice != 3 and manage_choice != 4 and manage_choice != 5 and manage_choice != 6 and manage_choice != 7:
         manage_choice = input('''
         [1] - Display users list    
         [2] - Search a specific user    
         [3] - Create a new user
-        [4] - Update user info
+        [4] - Update user username
         [5] - Delete a user
-        [6] - return to main menu
+        [6] - Display user info
+        [7] - return to main menu
         ''')
         if not check_special_characters(manage_choice):
             manage_choice = 0
@@ -172,7 +202,7 @@ def users_menu():
     if manage_choice == 2:
         user = input(
             '''
-            Type user's username who want
+            Type user's username you want to show
             ''')
         find_user(user)
         manage_choice = users_menu()
@@ -193,7 +223,7 @@ def users_menu():
             '''
             Type the new username 
             ''')
-        update_user(username, new_username)
+        update_username(username, new_username)
         manage_choice = users_menu()
     if manage_choice == 5:
         get_all_users()
@@ -204,4 +234,11 @@ def users_menu():
         delete_user(username)
         manage_choice = users_menu()
     if manage_choice == 6:
+        get_all_users()
+        username = input(
+            '''
+            Type user's username you want
+            ''')
+        get_user_info(username)
+    if manage_choice == 7:
         return "main"
