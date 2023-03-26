@@ -1,22 +1,21 @@
 import json
 
-import user_manager
 import mystery_number
+import user_manager
 import utils
 
 
 #   @TODO Permit to play in another languages (fr and en)
 #   @TODO Add different level ( easy, normal, hard)
 #   @TODO Add a great score list per game ( the same for fails and wins )
-#   @TODO Display error if the player user wants to add already exists or display a explicit overwriting warning
 #   @TODO Add function to display player's statistics (% won, % fails)
 # Possible games list = ["Pendu alias hang_man", "Roulette", "bingo", "Rock, papern scissors", "Tic-Tac-Toe", "snake"]
 
 
 def choose_player():
     """
-    Permit to user to choose with wich profile he wants to play
-    :return: str
+        Permit to user to choose with wich profile he wants to play
+        :return: str
     """
     users = user_manager.get_user_files()
     user_manager.merge_json_files(users)
@@ -25,16 +24,26 @@ def choose_player():
         if tab:
             i = 1
             for p in tab:
-                print(f"{i} - {p['username']}")
+                if p['username'] == 'invite':
+                    print(f"{i} - {p['username']} (enter to choose) ")
+                else:
+                    print(f"{i} - {p['username']}")
                 i += 1
         else:
             user_manager.new_user('invite')
             return 'invite'
         player = input('Which player do you want to play with ? \n')
         player_exists = user_manager.get_user_files().__contains__(player + '.json')
-        while not player_exists:
-            player = input('Player not found, try again \n')
-            player_exists = user_manager.get_user_files().__contains__(player + '.json')
+        if player == "":
+            print(f"Great ! You play as invite ")
+            return "invite"
+        else:
+            while not player_exists:
+                player = input('Player not found, try again \n')
+                player_exists = user_manager.get_user_files().__contains__(player + '.json')
+                if player == "":
+                    print(f"Great ! You play as invite ")
+                    return "invite"
     print(f"Great ! You play as {player} ")
     return player
 
@@ -43,19 +52,19 @@ def games_menu():
     """
         Display games menu and user choose between games or return to main_menu
         :return: int
-        """
+    """
     manage_choice = 0
     while manage_choice != 1 and manage_choice != 2:
         manage_choice = input('''
             [1] - Mystery number
             [2] - return to main menu
             ''')
-        if not check_special_characters(manage_choice):
+        if not utils.check_special_characters(manage_choice):
             manage_choice = 0
         manage_choice = int(manage_choice)
     if manage_choice == 1:
         player = choose_player()
-        result = mystery_number(player)
+        result = mystery_number.mystery_number(player)
         check_win(result)
     if manage_choice == 2:
         return "main"
@@ -64,10 +73,10 @@ def games_menu():
 
 def check_win(game_result: []):
     """
-    Check and return true if user wins
-    increment nb fail or nbwin user's property if fails or wins
-    :param: array
-    :return: boolean
+        Check and return true if user wins
+        increment nb fail or nbwin user's property if fails or wins
+        :param: array
+        :return: boolean
     """
     if game_result[0] == 1:
         print(f"You won with {game_result[1]} attempts")
@@ -92,7 +101,7 @@ def main():
             [2] - Manage users
             [3] - Exit the game
             """)
-        if not check_special_characters(user_choice):
+        if not utils.check_special_characters(user_choice):
             user_choice = 0
         else:
             user_choice = int(user_choice)

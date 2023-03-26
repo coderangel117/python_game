@@ -3,7 +3,7 @@ import json
 import os
 
 from User import User
-from utils import check_special_characters
+import utils
 
 
 def get_all_users():
@@ -48,6 +48,8 @@ def new_user(username):
     :return: user:User
     """
     users = get_user_files()
+    if users.__contains__(username + ".json"):
+        print(f"User {username} already exists. ")
     user = User(username)
     user.username = username
     save_user(user)
@@ -89,11 +91,15 @@ def update_username(username, new_username):
             f.seek(0)  # <--- should reset file position to the beginning.
             json.dump(data, f, indent=2)
             f.truncate()  # remove remaining part
-        os.rename(file_name, new_file_name)
         users = get_user_files()
-        merge_json_files(users)
-        get_all_users()
-        print(f" The username {username} has been changed to {new_username}")
+        print(users)
+        if users.__contains__(file_name):
+            print(f"User {username} already exists.")
+        else:
+            os.rename(file_name, new_file_name)
+            merge_json_files(users)
+            get_all_users()
+            print(f" The username {username} has been changed to {new_username}")
     else:
         print('The username you have entered was not found')
 
@@ -140,9 +146,9 @@ def find_user(username: str):
 
 def save_user(user: User):
     """
-    Create a json file with user's information
-    :param user:
-    :return:
+        Create a json file with user's information
+        :param user:
+        :return:
     """
     users = get_user_files()
     username = user.username
@@ -165,9 +171,9 @@ def save_user(user: User):
 
 def merge_json_files(filename):
     """
-    Merge all user's json files in one
-    :param filename:
-    :return:
+        Merge all user's json files in one
+        :param filename:
+        :return:
     """
     result = list()
     for f1 in filename:
@@ -179,8 +185,8 @@ def merge_json_files(filename):
 
 def users_menu():
     """
-    Display users' manager menu and execute function with user's choice  or return to main menu
-    :return: int
+        Display users' manager menu and execute function with user's choice  or return to main menu
+        :return: int
     """
     manage_choice = 0
     while manage_choice != 1 and manage_choice != 2 and manage_choice != 3 and manage_choice != 4 and manage_choice != 5 and manage_choice != 6 and manage_choice != 7:
@@ -193,7 +199,7 @@ def users_menu():
         [6] - Display user info
         [7] - return to main menu
         ''')
-        if not check_special_characters(manage_choice):
+        if not utils.check_special_characters(manage_choice):
             manage_choice = 0
         manage_choice = int(manage_choice)
     if manage_choice == 1:
@@ -205,6 +211,7 @@ def users_menu():
             ''')
         find_user(user)
     if manage_choice == 3:
+        get_all_users()
         username = input(
             '''
             Type new user's username you want
