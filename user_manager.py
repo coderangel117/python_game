@@ -73,8 +73,8 @@ def get_user_info(username: str):
                         data['played_games'] == data['nbfail'] + data['nbwin']:
                     print(
                         f" User {data['username']} has {data['nbfail']} fails"
-                        f" ({(data['nbfail'] / data['played_games']) * 100} ) "
-                        f"and {data['nbwin']} wons ({(data['nbwin']  / data['played_games'] )* 100} )")
+                        f" ({(data['nbfail'] / data['played_games']) * 100}%) "
+                        f"and {data['nbwin']} wons ({(data['nbwin']  / data['played_games'] )* 100}% )")
                 else:
                     print('There are error in played games count....')
             else:
@@ -164,10 +164,8 @@ def find_user(username: str):
     :return: boolean
     """
     if get_user_files().__contains__(username + '.json'):
-        print("This user exist in the list")
         return True
     else:
-        print("This user doesn't exist")
         return False
 
 
@@ -239,7 +237,10 @@ def users_menu():
             '''
             Type user's username you want to show
             ''')
-        find_user(user)
+        if find_user(user):
+            print("This user exist in the list")
+        else:
+            print("This user doesn't exist")
     if manage_choice == 3:
         get_all_users()
         username = input(

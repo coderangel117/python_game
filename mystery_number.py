@@ -19,9 +19,6 @@ def mystery_number(player: str):
             user_number = input(f"Type a number between {number_min} and {number_max}\n")
             if not check_special_characters(user_number):
                 break
-            if user_number == "":
-                print("Type something ....")
-                break
             user_number = int(user_number)
             if user_number == 0 or user_number > number_max or user_number < number_min:
                 if force_counter >= 5:
@@ -50,4 +47,5 @@ def mystery_number(player: str):
     return_table.append(win)
     return_table.append(counter)
     return_table.append(player)
+    return_table.append("mystery_number")
     return return_table

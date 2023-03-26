@@ -1,6 +1,7 @@
 import json
 
 import mystery_number
+import rock_paper_scissors
 import user_manager
 import utils
 
@@ -8,7 +9,7 @@ import utils
 #   @TODO Permit to play in another languages (fr and en)
 #   @TODO Add different level (easy, normal, hard) (default => normal but can be changed)
 #   @TODO Add a great score list per game (the same for fails and wins)
-# Possible games list = ["Pendu alias hang_man", "Roulette", "bingo", "Rock, paper scissors", "Tic-Tac-Toe", "snake"]
+# Possible games list = ["Pendu alias hang_man", "Roulette", "bingo", "Tic-Tac-Toe", "snake"]
 
 
 def choose_player():
@@ -55,10 +56,11 @@ def games_menu():
         :return: int
     """
     manage_choice = 0
-    while manage_choice != 1 and manage_choice != 2:
+    while manage_choice != 1 and manage_choice != 2 and manage_choice != 3:
         manage_choice = input('''
             [1] - Mystery number
-            [2] - return to main menu
+            [2] - Rock paper scissors
+            [3] - return to main menu
             ''')
         if not utils.check_special_characters(manage_choice):
             manage_choice = 0
@@ -68,6 +70,10 @@ def games_menu():
         result = mystery_number.mystery_number(player)
         check_win(result)
     if manage_choice == 2:
+        player = choose_player()
+        result = rock_paper_scissors.mystery_number(player)
+        check_win(result)
+    if manage_choice == 3:
         return "main"
     return manage_choice
 
@@ -81,7 +87,10 @@ def check_win(game_result: []):
     """
     user_manager.add_played_game(game_result[2])
     if game_result[0] == 1:
-        print(f"You won with {game_result[1]} attempts")
+        if game_result[3] == "shifoumi":
+            print(f"You won with {game_result[1]} attempts")
+        else:
+            print(f"You won with {game_result[1]} points")
         user_manager.add_win(game_result[2])
         return True
     elif game_result[0] == -1:
