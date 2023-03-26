@@ -4,8 +4,8 @@ import random
 def rock_paper_scissors(player: str):
     return_table = []
     win = 0  # When user finds the great number
+    user_point = 0
     while win == 0:
-        user_point = 0
         ia_point = 0
         user_movement = ""
         ia_movement = ""
