@@ -196,23 +196,20 @@ def users_menu():
         if not check_special_characters(manage_choice):
             manage_choice = 0
         manage_choice = int(manage_choice)
-        if manage_choice == 1:
-            get_all_users()
-            manage_choice = users_menu()
+    if manage_choice == 1:
+        get_all_users()
     if manage_choice == 2:
         user = input(
             '''
             Type user's username you want to show
             ''')
         find_user(user)
-        manage_choice = users_menu()
     if manage_choice == 3:
         username = input(
             '''
             Type new user's username you want
             ''')
         new_user(username)
-        manage_choice = users_menu()
     if manage_choice == 4:
         get_all_users()
         username = input(
@@ -224,7 +221,6 @@ def users_menu():
             Type the new username 
             ''')
         update_username(username, new_username)
-        manage_choice = users_menu()
     if manage_choice == 5:
         get_all_users()
         username = input(
@@ -232,7 +228,6 @@ def users_menu():
             Type user's username who want
             ''')
         delete_user(username)
-        manage_choice = users_menu()
     if manage_choice == 6:
         get_all_users()
         username = input(

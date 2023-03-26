@@ -1,39 +1,16 @@
 import json
 
 import user_manager
-from mystery_number import mystery_number
-from utils import check_special_characters
+import mystery_number
+import utils
 
 
 #   @TODO Permit to play in another languages (fr and en)
-#   @TODO Merge main function and main_menu() ( if no bug generated )
 #   @TODO Add different level ( easy, normal, hard)
 #   @TODO Add a great score list per game ( the same for fails and wins )
-#   @TODO Display the number of laps remaining before failure
-#   @TODO Add a menu to choose his player
-#   @TODO Display error if user exists when user wants to add a new player or display a explicit warning
+#   @TODO Display error if the player user wants to add already exists or display a explicit overwriting warning
 #   @TODO Add function to display player's statistics (% won, % fails)
-# Possible games list = ["Pendu", "Roulette", "bingo", "Rock, papern scissors", "Tic-Tac-Toe", "snake"]
-
-
-def main_menu():
-    """
-    Display main menu
-    :return: int: return user's answer
-    """
-    answer = 0
-    while answer != 1 and answer != 2 and answer != 3:
-        answer = input(
-            """
-            [1] - Start the game   
-            [2] - Manage users
-            [3] - Exit the game
-            """)
-        if not check_special_characters(answer):
-            answer = 0
-        else:
-            answer = int(answer)
-    return answer
+# Possible games list = ["Pendu alias hang_man", "Roulette", "bingo", "Rock, papern scissors", "Tic-Tac-Toe", "snake"]
 
 
 def choose_player():
@@ -107,7 +84,18 @@ def check_win(game_result: []):
 
 
 def main():
-    user_choice = int(main_menu())
+    user_choice = 0
+    while user_choice != 1 and user_choice != 2 and user_choice != 3:
+        user_choice = input(
+            """
+            [1] - Start the game   
+            [2] - Manage users
+            [3] - Exit the game
+            """)
+        if not check_special_characters(user_choice):
+            user_choice = 0
+        else:
+            user_choice = int(user_choice)
     if user_choice == 1:
         result = games_menu()
         while result != "main":

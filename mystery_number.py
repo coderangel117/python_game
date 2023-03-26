@@ -7,6 +7,7 @@ def mystery_number(player: str):
     return_table = []
     win = 0  # When user finds the great number
     counter = 0  # The user's attempt count
+    max_counter = 10
     force_counter = 0  # Increment when user doesn't respect game's instructions
     fail_counter = False  # Become True when user has exceeded max attempts
     while win == 0 & fail_counter is not True:
@@ -36,13 +37,17 @@ def mystery_number(player: str):
                 break
             if user_number > random_number:
                 print('Your number is bigger than the mystery number')
+                if counter < (max_counter - 1):
+                    print(f"il ne vous reste que {(max_counter - 1) - counter} essais")
             if user_number < random_number:
                 print('Your number is smaller than the mystery number')
+                if counter < (max_counter - 1):
+                    print(f"il ne vous reste que {(max_counter - 1) - counter} essais")
             counter += 1
-            if counter == 5:
+            if counter == max_counter:
                 fail_counter = True
                 win = -1
     return_table.append(win)
     return_table.append(counter)
     return_table.append(player)
-    print(return_table)
+    return return_table
