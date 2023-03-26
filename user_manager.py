@@ -73,8 +73,8 @@ def get_user_info(username: str):
                         data['played_games'] == data['nbfail'] + data['nbwin']:
                     print(
                         f" User {data['username']} has {data['nbfail']} fails"
-                        f" ({(data['nbfail'] / data['played_games']) * 100}%) "
-                        f"and {data['nbwin']} wons ({(data['nbwin']  / data['played_games'] )* 100}% )")
+                        f" ({int((data['nbfail'] / data['played_games']) * 100)}%) "
+                        f"and {data['nbwin']} wons ({int((data['nbwin']  / data['played_games'] )* 100)}% )")
                 else:
                     print('There are error in played games count....')
             else:
