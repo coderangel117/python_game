@@ -6,7 +6,7 @@ import utils
 
 
 #   @TODO Permit to play in another languages (fr and en)
-#   @TODO Add different level (easy, normal, hard)
+#   @TODO Add different level (easy, normal, hard) (default => normal but can be changed)
 #   @TODO Add a great score list per game (the same for fails and wins)
 # Possible games list = ["Pendu alias hang_man", "Roulette", "bingo", "Rock, paper scissors", "Tic-Tac-Toe", "snake"]
 
@@ -29,6 +29,8 @@ def choose_player():
                     print(f"{i} - {p['username']}")
                 i += 1
         else:
+            print("No user found in list... \n"
+                  "User invite (default) selected ")
             user_manager.new_user('invite')
             return 'invite'
         player = input('Which player do you want to play with ? \n')
