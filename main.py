@@ -71,7 +71,7 @@ def games_menu():
         check_win(result)
     if manage_choice == 2:
         player = choose_player()
-        result = rock_paper_scissors.mystery_number(player)
+        result = rock_paper_scissors.rock_paper_scissors(player)
         check_win(result)
     if manage_choice == 3:
         return "main"

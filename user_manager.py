@@ -137,7 +137,6 @@ def add_played_game(username):
             data = json.load(f)
             data['played_games'] += 1  # <--- change `username` value.
             f.seek(0)  # <--- should reset file position to the beginning.
-            print(data['played_games'])
             json.dump(data, f, indent=2)
             f.truncate()  # remove remaining part
         users = get_user_files()

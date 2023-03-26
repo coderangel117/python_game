@@ -1,7 +1,7 @@
 import random
 
 
-def mystery_number(player: str):
+def rock_paper_scissors(player: str):
     return_table = []
     win = 0  # When user finds the great number
     while win == 0:
@@ -11,7 +11,12 @@ def mystery_number(player: str):
         ia_movement = ""
         while user_point < 3 and ia_point < 3:
             ia_movement = random.choice(['r', 'p', 's'])
-            user_movement = input(" Which movement want you to do ?\n")
+            user_movement = input(""" Which movement want you to do ?
+            Please type 
+            'r' - rock 
+            'p' - paper 
+            's' - scissors 
+            """)
             if user_movement in ("r", "p", "s"):
                 if ia_movement == "r" and user_movement == "s":
                     print('you lose')
@@ -33,15 +38,17 @@ def mystery_number(player: str):
                     user_point += 1
                 if ia_movement == user_movement:
                     print("No winner")
-                if user_point > 2:
+                if ia_point > 2:
                     win = -1
                     break
                 if user_point > 2:
                     win = 1
                     break
                 print(f"You : {user_point} \n IA : {ia_point}")
-        return_table.append(win)
-        return_table.append(user_point)
-        return_table.append(player)
-        return_table.append("shifoumi")
-        return return_table
+            else:
+                print("Please type 'r' for rock or 'p' for paper or 's' for scissors ")
+    return_table.append(win)
+    return_table.append(user_point)
+    return_table.append(player)
+    return_table.append("shifoumi")
+    return return_table
