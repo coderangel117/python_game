@@ -6,10 +6,9 @@ import utils
 
 
 #   @TODO Permit to play in another languages (fr and en)
-#   @TODO Add different level ( easy, normal, hard)
-#   @TODO Add a great score list per game ( the same for fails and wins )
-#   @TODO Add function to display player's statistics (% won, % fails)
-# Possible games list = ["Pendu alias hang_man", "Roulette", "bingo", "Rock, papern scissors", "Tic-Tac-Toe", "snake"]
+#   @TODO Add different level (easy, normal, hard)
+#   @TODO Add a great score list per game (the same for fails and wins)
+# Possible games list = ["Pendu alias hang_man", "Roulette", "bingo", "Rock, paper scissors", "Tic-Tac-Toe", "snake"]
 
 
 def choose_player():
@@ -78,6 +77,7 @@ def check_win(game_result: []):
         :param: array
         :return: boolean
     """
+    user_manager.add_played_game(game_result[2])
     if game_result[0] == 1:
         print(f"You won with {game_result[1]} attempts")
         user_manager.add_win(game_result[2])

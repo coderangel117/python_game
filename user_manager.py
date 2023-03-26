@@ -2,8 +2,8 @@ import glob
 import json
 import os
 
-from User import User
 import utils
+from User import User
 
 
 def get_all_users():
@@ -61,13 +61,26 @@ def get_user_info(username: str):
     """
     return user.tostring
     :param username:
-    :param user:
     :return:str
     """
+    users = get_user_files()
     file_name = username + '.json'
-    with open(file_name, 'r+') as f:
-        data = json.load(f)
-        print(f" User {data['username']} has {data['nbfail']} fails et {data['nbwin']} wons")
+    if users.__contains__(file_name):
+        with open(file_name, 'r+') as f:
+            data = json.load(f)
+            if data['played_games'] > 0:
+                if data['played_games'] >= data['nbfail'] & data['played_games'] >= data['nbfail'] & \
+                        data['played_games'] == data['nbfail'] + data['nbwin']:
+                    print(
+                        f" User {data['username']} has {data['nbfail']} fails"
+                        f" ({(data['nbfail'] / data['played_games']) * 100} ) "
+                        f"and {data['nbwin']} wons ({(data['nbwin']  / data['played_games'] )* 100} )")
+                else:
+                    print('There are error in played games count....')
+            else:
+                print(f"User {data['username']} have never played")
+    else:
+        print('User chosen doesn\'t exists')
 
 
 def delete_user(username: str):
@@ -117,6 +130,20 @@ def add_win(username):
         merge_json_files(users)
 
 
+def add_played_game(username):
+    if find_user(username):
+        file_name = username + '.json'
+        with open(file_name, 'r+') as f:
+            data = json.load(f)
+            data['played_games'] += 1  # <--- change `username` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            print(data['played_games'])
+            json.dump(data, f, indent=2)
+            f.truncate()  # remove remaining part
+        users = get_user_files()
+        merge_json_files(users)
+
+
 def add_fail(username):
     if find_user(username):
         file_name = username + '.json'
@@ -152,6 +179,7 @@ def save_user(user: User):
     """
     users = get_user_files()
     username = user.username
+    played_games = user.played_games
     nbfail = user.nbfail
     nbwin = user.nbwin
     greatest_score = user.greatest_score
@@ -159,6 +187,7 @@ def save_user(user: User):
     users.append(file_name)
     json_string = {
         'username': username,
+        'played_games': played_games,
         'nbfail': nbfail,
         'nbwin': nbwin,
         'greatest_score': greatest_score,
@@ -189,7 +218,8 @@ def users_menu():
         :return: int
     """
     manage_choice = 0
-    while manage_choice != 1 and manage_choice != 2 and manage_choice != 3 and manage_choice != 4 and manage_choice != 5 and manage_choice != 6 and manage_choice != 7:
+    while manage_choice != 1 and manage_choice != 2 and manage_choice != 3 and manage_choice != 4 \
+            and manage_choice != 5 and manage_choice != 6 and manage_choice != 7:
         manage_choice = input('''
         [1] - Display users list    
         [2] - Search a specific user    
