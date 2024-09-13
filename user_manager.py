@@ -26,16 +26,16 @@ def get_all_users():
 
 def get_user_files():
     """
-    create a string array with all json file name
-    :return:
+    create a string array with all json file name corresponding to all usernames
+    :return:array
     """
     users = []
     for file in glob.glob("*.json"):
         users.append(file)
     if users.__contains__('users.json'):
-        users.remove('users.json')
+        users.remove('users.json')  # Remove users.json from list
     else:
-        with open("users.json", 'w') as file:
+        with open("users.json", 'w') as file:  # Create the file if not exists
             file.write('[]')
             file.close()
     return users
@@ -47,13 +47,13 @@ def new_user(username):
     :param username:
     :return: user:User
     """
-    users = get_user_files()
-    if users.__contains__(username + ".json"):
+    users = get_user_files()  # Get all username
+    if users.__contains__(username + ".json"):  # Check if username is free
         print(f"User {username} already exists. ")
-    user = User(username)
+    user = User(username)  # Create user
     user.username = username
-    save_user(user)
-    merge_json_files(users)
+    save_user(user)  # Save user json file wit info
+    merge_json_files(users)  # Update the users.json file
     return user
 
 
@@ -69,26 +69,29 @@ def get_user_info(username: str):
         with open(file_name, 'r+') as f:
             data = json.load(f)
             if data['played_games'] > 0:
-                if data['played_games'] >= data['nbfail'] & data['played_games'] >= data['nbfail'] & \
-                        data['played_games'] == data['nbfail'] + data['nbwin']:
-                    print(
-                        f" User {data['username']} has {data['nbfail']} fails"
-                        f" ({int((data['nbfail'] / data['played_games']) * 100)}%) "
-                        f"and {data['nbwin']} wons ({int((data['nbwin']  / data['played_games'] )* 100)}% )")
+                if data['nbfail'] > 0 or data['nbwin'] > 0:
+                    if data['played_games'] == data['nbfail'] + data['nbwin']:  # Check if stats can be coherent
+                        print(
+                            f"User {data['username']} has {data['played_games']} played games "
+                            f"with {data['nbfail']} fails ({int((data['nbfail'] / data['played_games']) * 100)}%) "
+                            f"and {data['nbwin']} wons ({int((data['nbwin'] / data['played_games']) * 100)}%)")
+                    else:
+                        print('There are error in played games count....')
                 else:
-                    print('There are error in played games count....')
+                    print('There are error in win or fail count....')
             else:
                 print(f"User {data['username']} have never played")
     else:
-        print('User chosen doesn\'t exists')
+        print("User chosen doesn't exists")
 
 
 def delete_user(username: str):
     users = get_user_files()
     filename = username + '.json'
     if users.__contains__(filename):
-        os.remove(filename)
-        get_all_users()
+        os.remove(filename)  # Remove the user's json file
+        get_all_users()  # Print all username
+        print(f"User {username} has been successfully deleted")
     else:
         print("This user doesn't exist")
 
@@ -98,19 +101,19 @@ def update_username(username, new_username):
     if find_user(username):
         file_name = username + '.json'
         new_file_name = new_username + '.json'
-        with open(file_name, 'r+') as f:
-            data = json.load(f)
-            data['username'] = new_username  # <--- change `username` value.
-            f.seek(0)  # <--- should reset file position to the beginning.
-            json.dump(data, f, indent=2)
-            f.truncate()  # remove remaining part
         users = get_user_files()
-        print(users)
-        if users.__contains__(file_name):
+        if users.__contains__(new_file_name):
             print(f"User {username} already exists.")
         else:
-            os.rename(file_name, new_file_name)
+            with open(file_name, 'r+') as f:
+                users = get_user_files()
+                data = json.load(f)
+                data['username'] = new_username  # change `username` value.
+                f.seek(0)  # should reset file position to the beginning.
+                json.dump(data, f, indent=2)
+                f.truncate()  # remove remaining part
             merge_json_files(users)
+            os.rename(file_name, new_file_name)
             get_all_users()
             print(f" The username {username} has been changed to {new_username}")
     else:
@@ -122,8 +125,8 @@ def add_win(username):
         file_name = username + '.json'
         with open(file_name, 'r+') as f:
             data = json.load(f)
-            data['nbwin'] += 1  # <--- change `username` value.
-            f.seek(0)  # <--- should reset file position to the beginning.
+            data['nbwin'] += 1  # increase win stat value.
+            f.seek(0)  # should reset file position to the beginning.
             json.dump(data, f, indent=2)
             f.truncate()  # remove remaining part
         users = get_user_files()
@@ -135,8 +138,8 @@ def add_played_game(username):
         file_name = username + '.json'
         with open(file_name, 'r+') as f:
             data = json.load(f)
-            data['played_games'] += 1  # <--- change `username` value.
-            f.seek(0)  # <--- should reset file position to the beginning.
+            data['played_games'] += 1  # change played game value.
+            f.seek(0)  # should reset file position to the beginning.
             json.dump(data, f, indent=2)
             f.truncate()  # remove remaining part
         users = get_user_files()
@@ -145,15 +148,15 @@ def add_played_game(username):
 
 def add_fail(username):
     if find_user(username):
-        file_name = username + '.json'
+        file_name = username + '.json'  # Get user's file
         with open(file_name, 'r+') as f:
-            data = json.load(f)
-            data['nbfail'] += 1  # <--- change `username` value.
-            f.seek(0)  # <--- should reset file position to the beginning.
+            data = json.load(f)  # load file
+            data['nbfail'] += 1  # increase fail value.
+            f.seek(0)  # should reset file position to the beginning.
             json.dump(data, f, indent=2)
             f.truncate()  # remove remaining part
         users = get_user_files()
-        merge_json_files(users)
+        merge_json_files(users)  # Update the users.json
 
 
 def find_user(username: str):
@@ -174,6 +177,8 @@ def save_user(user: User):
         :param user:
         :return:
     """
+    # All default value are 0 without username
+
     users = get_user_files()
     username = user.username
     played_games = user.played_games
@@ -184,10 +189,10 @@ def save_user(user: User):
     users.append(file_name)
     json_string = {
         'username': username,
-        'played_games': played_games,
-        'nbfail': nbfail,
-        'nbwin': nbwin,
-        'greatest_score': greatest_score,
+        'played_games': played_games,  # default value to 0
+        'nbfail': nbfail,  # default value to 0
+        'nbwin': nbwin,  # default value to 0
+        'greatest_score': greatest_score,  # default value to 0
     }
 
     file = open(file_name, "w")
