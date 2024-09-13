@@ -4,6 +4,7 @@ def myprint(input):
         print('No input')
     else:
         print(f"You have write {input}")  # concatenate with f string method
+        print("You have write", input)  # easier concatenation method
 
 
 if __name__ == '__main__':
