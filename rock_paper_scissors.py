@@ -7,37 +7,36 @@ def rock_paper_scissors(player: str):
     user_point = 0
     while win == 0:
         ia_point = 0
-        user_movement = ""
-        ia_movement = ""
         while user_point < 3 and ia_point < 3:
-            ia_movement = random.choice(['r', 'p', 's'])
-            user_movement = input(""" Which movement want you to do ?
+            user_movement = 0
+            ia_movement = 0
+            ia_movement = random.choice([1, 2, 3])
+            choice = ["rock", "paper", "scissors"]
+            user_movement = int(input(""" Which movement want you to do ?
             Please type 
-            'r' - rock 
-            'p' - paper 
-            's' - scissors 
-            """)
-            if user_movement in ("r", "p", "s"):
-                if ia_movement == "r" and user_movement == "s":
-                    print('you lose')
-                    ia_point += 1
-                if user_movement == "r" and ia_movement == "s":
-                    print('you win')
-                    user_point += 1
-                if ia_movement == "p" and user_movement == "r":
-                    print('you lose')
-                    ia_point += 1
-                if user_movement == "p" and ia_movement == "r":
-                    print('you win')
-                    user_point += 1
-                if ia_movement == "s" and user_movement == "p":
-                    print('you lose')
-                    ia_point += 1
-                if user_movement == "s" and ia_movement == "p":
-                    print('you win')
-                    user_point += 1
+            '1' - rock
+            '2' - paper
+            '3' - scissors
+            """))
+            print(f" You choose {choice[user_movement - 1]}\n"
+                  f" ia choose {choice[ia_movement - 1]}")
+            if user_movement in (1, 2, 3):
                 if ia_movement == user_movement:
                     print("No winner")
+                if ia_movement < user_movement:
+                    if ia_movement == 1 and user_movement == 3:
+                        print("you lose")
+                        ia_point += 1
+                    else:
+                        print("you win")
+                        user_point += 1
+                elif user_movement < ia_movement:
+                    if ia_movement == 3 and user_movement == 1:
+                        print("you win")
+                        user_point += 1
+                    else:
+                        print("you lose")
+                        ia_point += 1
                 if ia_point > 2:
                     win = -1
                     break
@@ -46,7 +45,7 @@ def rock_paper_scissors(player: str):
                     break
                 print(f"You : {user_point} \n IA : {ia_point}")
             else:
-                print("Please type 'r' for rock or 'p' for paper or 's' for scissors ")
+                print("Please type '1' for rock or '2' for paper or '3' for scissors ")
     return_table.append(win)
     return_table.append(user_point)
     return_table.append(player)
