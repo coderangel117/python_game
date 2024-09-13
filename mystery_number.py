@@ -3,6 +3,7 @@ import random
 from utils import check_special_characters
 
 
+# @TODO: Add differents difficulty ( number of attempts or greater score as possible)
 def mystery_number(player: str):
     return_table = []
     win = 0  # When user finds the great number
@@ -43,6 +44,8 @@ def mystery_number(player: str):
             counter += 1
             if counter == max_counter:
                 fail_counter = True
+                print("You have exceeded the maximum number of attempts")
+                print(f"the mystery number was {random_number}")
                 win = -1
     return_table.append(win)
     return_table.append(counter)
