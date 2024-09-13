@@ -81,7 +81,7 @@ def games_menu():
         result = tic_tac_toe.tic_tac_toe(player)
         check_win(result)
 
-    if manage_choice == 3:
+    if manage_choice == 4:
         return "main"
     return manage_choice
 

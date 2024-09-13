@@ -237,12 +237,30 @@ def users_menu():
     if manage_choice == 1:
         get_all_users()
     if manage_choice == 2:
-        user = input(
+        username = input(
             '''
             Type user's username you want to show
             ''')
-        if find_user(user):
-            print("This user exist in the list")
+        if find_user(username):
+            response = int(input(f"This user exist in the list\n"
+                                 f"Would you realize an action on this user ?\n"
+                                 f"1 - Go user's stats\n"
+                                 f"2 - Update this user\n"
+                                 f"3 - Delete this user\n"
+                                 f"4 - Return to the previous menu\n"))
+            if response == 1:
+                get_user_info(username)
+            if response == 2:
+                new_username = input(
+                    '''
+                    Type the new username 
+                    ''')
+                update_username(username, new_username)
+            if response == 3:
+                delete_user(username)
+                print("This user is deleted")
+            if response == 4:
+                users_menu()
         else:
             print("This user doesn't exist")
     if manage_choice == 3:
