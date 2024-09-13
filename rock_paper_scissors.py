@@ -18,9 +18,9 @@ def rock_paper_scissors(player: str):
             '2' - paper
             '3' - scissors
             """))
-            print(f" You choose {choice[user_movement - 1]}\n"
-                  f" ia choose {choice[ia_movement - 1]}")
             if user_movement in (1, 2, 3):
+                print(f" You choose {choice[user_movement - 1]}\n"
+                      f" ia choose {choice[ia_movement - 1]}")
                 if ia_movement == user_movement:
                     print("No winner")
                 if ia_movement < user_movement:
