@@ -1,5 +1,4 @@
 # @TODO: can create game plate with 3 cols or greater
-import utils
 
 
 def tic_tac_toe(player: str):
@@ -17,51 +16,66 @@ def tic_tac_toe(player: str):
     ]
 
     while win == 0:
-        print(player_turn)
+        print(f"Player {player_turn}'s turn")
         display_game_plate(game_plate)
-        player_coordonate_x = input('Please type coordonate for the row you choose\n')
-        player_coordonate_y = input('Please type coordonate for the column you choose\n')
-        coordonates = verify_coordonate(player_coordonate_x, player_coordonate_y, game_plate)
-        if coordonates:
-            x = coordonates[0]
-            y = coordonates[1]
+        player_coordinate_x = input('Please type coordinate for the row you choose\n')
+        player_coordinate_y = input('Please type coordinate for the column you choose\n')
+        coordinates = verify_coordinate(player_coordinate_x, player_coordinate_y, game_plate)
+        if coordinates:
+            x = coordinates[0]
+            y = coordinates[1]
             game_plate[x][y] = player_turn
             display_game_plate(game_plate)
+            win = check_win_condition(game_plate)
+            if win != 0:
+                break
             player_turn *= -1
         else:
-            player_turn *= 1
-    else:
-        player_turn *= 1
+            print("Invalid move. Try again.")
+    print(f"Player {player_turn} wins!")
     return [1, 1, player, "tic tac toe"]
 
 
-def verify_coordonate(player_coordonate_x: str, player_coordonate_y: str, game_plate):
+def verify_coordinate(player_coordinate_x: str, player_coordinate_y: str, game_plate):
     """
-    This function permit to check user's input and return it if all character is clean
-    :param player_coordonate_y:
-    :param player_coordonate_x:
-    :param game_plate:
-    :return: boolean
+    This function checks the user's input and returns it if valid.
+    :param player_coordinate_x: The x-coordinate input by the player.
+    :param player_coordinate_y: The y-coordinate input by the player.
+    :param game_plate: The current game board.
+    :return: Tuple of coordinates if valid, otherwise False.
     """
-    check_x = utils.check_special_characters(player_coordonate_x)
-    check_y = utils.check_special_characters(player_coordonate_x)
-    if check_x and check_y:
-        x = int(player_coordonate_x)
-        y = int(player_coordonate_y)
+    if player_coordinate_x.isdigit() and player_coordinate_y.isdigit():
+        x = int(player_coordinate_x)
+        y = int(player_coordinate_y)
         if x in (0, 1, 2) and y in (0, 1, 2):
             if game_plate[x][y] == 0:
                 return x, y
             else:
-                print("foo", game_plate[x][y])
-                print("Please choose another coordonate")
-                return False
+                print("Cell already taken. Choose another coordinate.")
     return False
 
 
 def display_game_plate(game_plate):
+    for row in game_plate:
+        print(" | ".join(str(cell) if cell != 0 else " " for cell in row))
+        print("-" * 10)
+
+
+def check_win_condition(game_plate):
+    """
+    Check the game board for a win condition.
+    :param game_plate: The current game board.
+    :return: The winning player number, or 0 if no winner.
+    """
+    # Check rows and columns
     for i in range(3):
-        print(
-            i,
-            game_plate[i],
-        )
-    print("A", "B", "C")
+        if game_plate[i][0] == game_plate[i][1] == game_plate[i][2] != 0:
+            return game_plate[i][0]
+        if game_plate[0][i] == game_plate[1][i] == game_plate[2][i] != 0:
+            return game_plate[0][i]
+    # Check diagonals
+    if game_plate[0][0] == game_plate[1][1] == game_plate[2][2] != 0:
+        return game_plate[0][0]
+    if game_plate[0][2] == game_plate[1][1] == game_plate[2][0] != 0:
+        return game_plate[0][2]
+    return 0
