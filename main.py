@@ -99,6 +99,8 @@ def check_win(game_result: []):
             print(f"You won with {game_result[1]} attempts")
         elif game_result[3] == "shifoumi":
             print(f"You won with {game_result[1]} points")
+        elif game_result[3] == "tic tac toe":
+            print(f"You won with {game_result[1]} points")
         user_manager.add_win(game_result[2])
         return True
     elif game_result[0] == -1:
