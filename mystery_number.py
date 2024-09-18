@@ -36,11 +36,11 @@ def mystery_number(player: str):
             if user_number > random_number:
                 print('Your number is bigger than the mystery number')
                 if counter < (max_counter - 1):
-                    print(f"il ne vous reste que {(max_counter - 1) - counter} essais")
+                    print(f" You have  {(max_counter - 1) - counter} attempts")
             if user_number < random_number:
                 print('Your number is smaller than the mystery number')
                 if counter < (max_counter - 1):
-                    print(f"il ne vous reste que {(max_counter - 1) - counter} essais")
+                    print(f"You have {(max_counter - 1) - counter} attempts yet")
             counter += 1
             if counter == max_counter:
                 fail_counter = True
