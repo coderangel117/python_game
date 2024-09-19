@@ -1,12 +1,13 @@
 # @TODO: can create game plate with 3 cols or greater
+# @TODO: Add computer turn 
 
 
 def tic_tac_toe(player: str):
     """
-
     :param player:
     :return: [win, points, winner, game]
     """
+    points = 0
     win = 0
     player_turn = 1
     game_plate = [
@@ -14,8 +15,9 @@ def tic_tac_toe(player: str):
         [0, 0, 0],
         [0, 0, 0]
     ]
-
-    while win == 0:
+    print("You are player 1\n")
+    while win == 0 and win != "tie":
+        empty_cell = 0
         print(f"Player {player_turn}'s turn")
         display_game_plate(game_plate)
         player_coordinate_x = input('Please type coordinate for the row you choose\n')
@@ -28,12 +30,22 @@ def tic_tac_toe(player: str):
             display_game_plate(game_plate)
             win = check_win_condition(game_plate)
             if win != 0:
-                break
+                print(f"Player {player_turn} wins!")
+                if player_turn == 1:
+                    points = 1
+                    break
             player_turn *= -1
         else:
             print("Invalid move. Try again.")
-    print(f"Player {player_turn} wins!")
-    return [1, 1, player, "tic tac toe"]
+        # check tie 
+        for i in range(3):
+            for j in range(3):
+                if game_plate[i][j] == game_plate[i][j] == game_plate[i][j] == 0:
+                    empty_cell += 1
+        if empty_cell == 0:
+            print("it's a tie")
+            win = "tie"
+    return [win, points, player, "tic tac toe"]
 
 
 def verify_coordinate(player_coordinate_x: str, player_coordinate_y: str, game_plate):
