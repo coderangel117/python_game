@@ -7,11 +7,6 @@ import user_manager
 import utils
 
 
-#   @TODO Permit to play in another languages (fr and en)
-#   @TODO Permit to add a new user in game menu
-#   @TODO Compile a ranking of the best scores
-#   @TODO Add different level (easy, normal, hard) (default => normal but can be changed)
-#   @TODO Add a great score list per game (the same for fails and wins)
 def choose_player():
     """
         user can choose with wich profile he wants to play

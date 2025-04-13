@@ -41,9 +41,18 @@ You can add, update, delete or list users. You can also view stats about a user.
 There is some json files in the data folder that contains the user's data.
 If you delete the files, you will lose all the data.
 
+
 ### Future games
 
 possible_games_list = ["Pendu alias hang_man", "Roulette", "bingo",]
+
+## Next features
+
+- Permit to play in another languages (fr and en)
+- Permit to add a new user in game menu
+- Compile a ranking of the best scores
+- Add different level (easy, normal, hard) (default => normal but can be changed)
+- Add a great score list per game (the same for fails and wins)
 
 ## Usage
 
