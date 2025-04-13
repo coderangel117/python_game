@@ -1,4 +1,11 @@
 main:
 	python3 main.py
-tests:
-	python3 -m unittest
+
+tests=python -m unittest -v -b
+
+ALLMODULES=$(patsubst %.py, %.py, $(wildcard test_*.py))
+all:
+	${tests} ${ALLMODULES}
+
+% : test_%.py
+	${RUNTEST} test_$@

@@ -2,7 +2,7 @@
 
 ## Description
 
-This project is a CLI programm that allows you to play differents games.
+This project is a CLI program that allows you to play different games.
 
 ## Installation
 
@@ -50,7 +50,7 @@ possible_games_list = ["Pendu alias hang_man", "Roulette", "bingo",]
 To start the program, you need to run the main.py file.
 
 ```bash
-python main.py
+make
 ```
 
 ## Author

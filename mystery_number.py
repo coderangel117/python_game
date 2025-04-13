@@ -3,7 +3,7 @@ import random
 from utils import check_special_characters
 
 
-# @TODO: Add differents difficulty ( number of attempts or greater score as possible)
+# @TODO: Add different difficulty ( number of attempts or greater score as possible)
 def mystery_number(player: str):
     return_table = []
     win = 0  # When user finds the great number
