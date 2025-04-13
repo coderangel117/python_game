@@ -1,14 +1,19 @@
+import os
 import unittest
 from unittest.mock import patch
 
 import main
+import user_manager
 
 
 class TestMain(unittest.TestCase):
 
     def setUp(self):
-        file = open('../users.json', 'w')
-        file.write("""[
+        user_manager.new_user('gab')
+        user_manager.new_user('invite')
+        with open('users.json', 'w') as f:
+            f.write("""
+[
   {
     "username": "invite",
     "played_games": 4,
@@ -24,7 +29,7 @@ class TestMain(unittest.TestCase):
     "greatest_score": []
   }
 ]""")
-        file.close()
+            f.close()
 
     @patch('builtins.print')
     def test_check_win(self, mock_print):
@@ -36,6 +41,13 @@ class TestMain(unittest.TestCase):
         mock_print.assert_called_with("You loose because you doesn't find the number before the last attempt")
         self.assertFalse(main.check_win([-2, 3, "invite", "mystery_number"]))
         mock_print.assert_called_with('You loose because you are a monkey')
+
+    @patch('builtins.print')
+    @patch('builtins.input', return_value='')
+    def test_choose_player_invite(self, mock_input, mock_print):
+        self.assertEqual(main.choose_player(), "invite")
+        mock_input.assert_called_with('Which player do you want to play with ? \n')
+        mock_print.assert_called_with("Great ! You play as invite \nWARNING: The game won't count in user's stat ")
 
     @patch('builtins.print')
     @patch('builtins.input', return_value='gab')
@@ -67,6 +79,11 @@ class TestMain(unittest.TestCase):
             [3] - Tic Tac Toe
             [4] - return to main menu
             ''')
+
+    def tearDown(self):
+        os.remove('users.json')
+        os.remove('gab.json')
+        os.remove('invite.json')
 
 
 if __name__ == '__main__':
