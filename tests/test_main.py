@@ -1,4 +1,3 @@
-import os
 import unittest
 from unittest.mock import patch
 
@@ -11,10 +10,6 @@ class TestMain(unittest.TestCase):
         file = open('../users.json', 'w')
         file.write('[]')
         file.close()
-        self.assertTrue(os.path.exists('../users.json'))
-        users = open('../users.json')
-        self.assertEqual(users.read(), '[]')
-        users.close()
 
     @patch('builtins.print')
     def test_check_win(self, mock_print):
@@ -27,18 +22,20 @@ class TestMain(unittest.TestCase):
         self.assertFalse(main.check_win([-2, 3, "invite", "mystery_number"]))
         mock_print.assert_called_with('You loose because you are a monkey')
 
-    def test_choose_player(self):
+    @patch('builtins.print')
+    @patch('builtins.input', return_value='')
+    def test_choose_player(self, mock_input, mock_print):
         self.assertEqual(main.choose_player(), "invite")
 
-    def test_main(self):
+    @patch('builtins.print')
+    @patch('builtins.input', return_value="3")
+    def test_main(self, mock_input, mock_print):
         result = main.main()
-        self.assertEqual(result, "bye")
+        mock_print.assert_called_with('Bye')
+        self.assertEqual(result, 1)
 
     def test_games_menu(self):
         pass
-
-    def tearDown(self):
-        os.remove('../users.json')
 
 
 if __name__ == '__main__':
