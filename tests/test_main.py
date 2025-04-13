@@ -8,7 +8,22 @@ class TestMain(unittest.TestCase):
 
     def setUp(self):
         file = open('../users.json', 'w')
-        file.write('[]')
+        file.write("""[
+  {
+    "username": "invite",
+    "played_games": 4,
+    "nbfail": 2,
+    "nbwin": 2,
+    "greatest_score": []
+  },
+  {
+    "username": "gab",
+    "played_games": 4,
+    "nbfail": 2,
+    "nbwin": 2,
+    "greatest_score": []
+  }
+]""")
         file.close()
 
     @patch('builtins.print')
@@ -23,19 +38,35 @@ class TestMain(unittest.TestCase):
         mock_print.assert_called_with('You loose because you are a monkey')
 
     @patch('builtins.print')
-    @patch('builtins.input', return_value='')
-    def test_choose_player(self, mock_input, mock_print):
+    @patch('builtins.input', return_value='gab')
+    def test_choose_player_ok(self, mock_input, mock_print):
+        self.assertEqual(main.choose_player(), "gab")
+        mock_input.assert_called_with('Which player do you want to play with ? \n')
+        mock_print.assert_called_with("Great ! You play as gab ")
+
+    @patch('builtins.print')
+    @patch('builtins.input', side_effect=['foo', ''])
+    def test_choose_player_ko(self, mock_input, mock_print):
         self.assertEqual(main.choose_player(), "invite")
+        mock_input.assert_called_with('Player not found, try again \n')
+        mock_print.assert_called_with("Great ! You play as invite ")
 
     @patch('builtins.print')
     @patch('builtins.input', return_value="3")
     def test_main(self, mock_input, mock_print):
-        result = main.main()
+        self.assertEqual(main.main(), 1)
         mock_print.assert_called_with('Bye')
-        self.assertEqual(result, 1)
 
-    def test_games_menu(self):
-        pass
+    @patch('builtins.print')
+    @patch('builtins.input', return_value="4")
+    def test_games_menu_return(self, mock_input, mock_print):
+        self.assertEqual(main.games_menu(), "main")
+        mock_input.assert_called_with('''
+            [1] - Mystery number
+            [2] - Rock paper scissors
+            [3] - Tic Tac Toe
+            [4] - return to main menu
+            ''')
 
 
 if __name__ == '__main__':
