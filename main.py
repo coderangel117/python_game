@@ -12,7 +12,6 @@ import utils
 #   @TODO Compile a ranking of the best scores
 #   @TODO Add different level (easy, normal, hard) (default => normal but can be changed)
 #   @TODO Add a great score list per game (the same for fails and wins)
-# possible_games_list = ["Pendu alias hang_man", "Roulette", "bingo", "Tic-Tac-Toe", "snake"]
 def choose_player():
     """
         user can choose with wich profile he wants to play

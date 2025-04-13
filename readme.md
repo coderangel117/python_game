@@ -43,7 +43,7 @@ If you delete the files, you will lose all the data.
 
 ### Future games
 
-possible_games_list = ["Pendu alias hang_man", "Roulette", "bingo", "Tic-Tac-Toe", "snake"]
+possible_games_list = ["Pendu alias hang_man", "Roulette", "bingo",]
 
 ## Usage
 
@@ -59,7 +59,7 @@ Coded by [coderangel117](https://github.com/coderangel117)
 
 ## License
 
-This project is under the MIT license.
+This project is under the MIT licence.
 
 ## Bugs report or feature request
 
