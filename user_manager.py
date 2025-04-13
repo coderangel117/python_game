@@ -6,6 +6,78 @@ import utils
 from User import User
 
 
+def get_user_files():
+    """
+    create a string array with all json file name corresponding to all usernames
+    :return:array
+    """
+    users = []
+    for file in glob.glob("*.json"):
+        users.append(file)
+    if users.__contains__('users.json'):
+        users.remove('users.json')  # Remove users.json from list
+    else:
+        with open("users.json", 'w') as file:  # Create the file if not exists
+            file.write('[]')
+            file.close()
+    return users
+
+
+def merge_json_files(filename: str):
+    """
+        Merge all user's json files in one
+        :param filename:
+        :return:
+    """
+    result = list()
+    for f1 in filename:
+        with open(f1, 'r') as infile:
+            result.append(json.load(infile))
+    with open('users.json', 'w') as output_file:
+        json.dump(result, output_file, indent=2)
+
+
+def find_user(username: str):
+    """
+    Return true if user_list contains searched user
+    :param username:
+    :return: boolean
+    """
+    if get_user_files().__contains__(username + '.json'):
+        return True
+    else:
+        return False
+
+
+def save_user(user: User):
+    """
+        Create a json file with user's information
+        :param user:
+        :return:
+    """
+    # All default value are 0 without username
+
+    users = get_user_files()
+    username = user.username
+    played_games = user.played_games
+    nbfail = user.nbfail
+    nbwin = user.nbwin
+    greatest_score = user.greatest_score
+    file_name = user.username + ".json"
+    users.append(file_name)
+    json_string = {
+        'username': username,
+        'played_games': played_games,  # default value to 0
+        'nbfail': nbfail,  # default value to 0
+        'nbwin': nbwin,  # default value to 0
+        'greatest_score': greatest_score,  # default value to 0
+    }
+
+    file = open(file_name, "w")
+    json.dump(json_string, file, indent=2)
+    file.close()
+
+
 def get_all_users():
     """
     return all user in users.json
@@ -24,27 +96,10 @@ def get_all_users():
     # Parcours du fichier users.json
 
 
-def get_user_files():
-    """
-    create a string array with all json file name corresponding to all usernames
-    :return:array
-    """
-    users = []
-    for file in glob.glob("*.json"):
-        users.append(file)
-    if users.__contains__('users.json'):
-        users.remove('users.json')  # Remove users.json from list
-    else:
-        with open("users.json", 'w') as file:  # Create the file if not exists
-            file.write('[]')
-            file.close()
-    return users
-
-
-def new_user(username):
+def new_user(username: str):
     """
     Create a new user with class User
-    :param username:
+    :param username:str
     :return: user:User
     """
     users = get_user_files()  # Get all username
@@ -96,7 +151,7 @@ def delete_user(username: str):
         print("This user doesn't exist")
 
 
-def update_username(username, new_username):
+def update_username(username: str, new_username: str):
     get_all_users()
     if find_user(username):
         file_name = username + '.json'
@@ -120,7 +175,7 @@ def update_username(username, new_username):
         print('The username you have entered was not found')
 
 
-def add_win(username):
+def add_win(username: str):
     if find_user(username):
         file_name = username + '.json'
         with open(file_name, 'r+') as f:
@@ -133,7 +188,7 @@ def add_win(username):
         merge_json_files(users)
 
 
-def add_played_game(username):
+def add_played_game(username: str):
     if find_user(username):
         file_name = username + '.json'
         with open(file_name, 'r+') as f:
@@ -146,7 +201,7 @@ def add_played_game(username):
         merge_json_files(users)
 
 
-def add_fail(username):
+def add_fail(username: str):
     if find_user(username):
         file_name = username + '.json'  # Get user's file
         with open(file_name, 'r+') as f:
@@ -157,61 +212,6 @@ def add_fail(username):
             f.truncate()  # remove remaining part
         users = get_user_files()
         merge_json_files(users)  # Update the users.json
-
-
-def find_user(username: str):
-    """
-    Return true if user_list contains searched user
-    :param username:
-    :return: boolean
-    """
-    if get_user_files().__contains__(username + '.json'):
-        return True
-    else:
-        return False
-
-
-def save_user(user: User):
-    """
-        Create a json file with user's information
-        :param user:
-        :return:
-    """
-    # All default value are 0 without username
-
-    users = get_user_files()
-    username = user.username
-    played_games = user.played_games
-    nbfail = user.nbfail
-    nbwin = user.nbwin
-    greatest_score = user.greatest_score
-    file_name = user.username + ".json"
-    users.append(file_name)
-    json_string = {
-        'username': username,
-        'played_games': played_games,  # default value to 0
-        'nbfail': nbfail,  # default value to 0
-        'nbwin': nbwin,  # default value to 0
-        'greatest_score': greatest_score,  # default value to 0
-    }
-
-    file = open(file_name, "w")
-    json.dump(json_string, file, indent=2)
-    file.close()
-
-
-def merge_json_files(filename):
-    """
-        Merge all user's json files in one
-        :param filename:
-        :return:
-    """
-    result = list()
-    for f1 in filename:
-        with open(f1, 'r') as infile:
-            result.append(json.load(infile))
-    with open('users.json', 'w') as output_file:
-        json.dump(result, output_file, indent=2)
 
 
 def users_menu():
