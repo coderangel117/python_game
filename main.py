@@ -40,7 +40,8 @@ def choose_player():
                 player = input('Player not found, try again \n')
                 player_exists = user_manager.get_user_files().__contains__(player + '.json')
                 if player == "":
-                    print(f"Great ! You play as invite ")
+                    print("Great ! You play as invite \n"
+                   "WARNING: The game won't count in user's stat ")
                     return "invite"
     print(f"Great ! You play as {player} ")
     return player
@@ -106,6 +107,7 @@ def check_win(game_result: []):
 
 
 def main():
+    utils.init_json_files()
     user_choice = 0
     while user_choice != 1 and user_choice != 2 and user_choice != 3:
         user_choice = input(

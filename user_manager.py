@@ -23,7 +23,7 @@ def get_user_files():
     return users
 
 
-def merge_json_files(filename: str):
+def merge_json_files(filename: list[str]):
     """
         Merge all user's json files in one
         :param filename:
@@ -58,6 +58,8 @@ def save_user(user: User):
     # All default value are 0 without username
 
     users = get_user_files()
+    f = open("users.json", "w")
+    f.close()
     username = user.username
     played_games = user.played_games
     nbfail = user.nbfail
@@ -81,10 +83,10 @@ def save_user(user: User):
 def get_all_users():
     """
     return all user in users.json
-    :return:
+    :return: users
     """
-    users = get_user_files()
-    merge_json_files(users)
+    users_list = get_user_files()
+    merge_json_files(users_list)
     with open('users.json') as users:
         tab = json.load(users)
         if tab:
@@ -92,8 +94,7 @@ def get_all_users():
                 print(p['username'])
         else:
             new_user('invite')
-    return users
-    # Parcours du fichier users.json
+    return users_list
 
 
 def new_user(username: str):

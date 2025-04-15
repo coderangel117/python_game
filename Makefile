@@ -1,5 +1,7 @@
 main:
 	python3 main.py
+clean:
+	rm -f *.json
 
 tests=python -m unittest -v -b
 

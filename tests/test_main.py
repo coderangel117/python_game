@@ -16,16 +16,16 @@ class TestMain(unittest.TestCase):
 [
   {
     "username": "invite",
-    "played_games": 4,
-    "nbfail": 2,
-    "nbwin": 2,
+    "played_games": 0,
+    "nbfail": 0,
+    "nbwin": 0,
     "greatest_score": []
   },
   {
     "username": "gab",
-    "played_games": 4,
-    "nbfail": 2,
-    "nbwin": 2,
+    "played_games": 0,
+    "nbfail": 0,
+    "nbwin": 0,
     "greatest_score": []
   }
 ]""")
@@ -61,7 +61,7 @@ class TestMain(unittest.TestCase):
     def test_choose_player_ko(self, mock_input, mock_print):
         self.assertEqual(main.choose_player(), "invite")
         mock_input.assert_called_with('Player not found, try again \n')
-        mock_print.assert_called_with("Great ! You play as invite ")
+        mock_print.assert_called_with("Great ! You play as invite \nWARNING: The game won't count in user's stat ")
 
     @patch('builtins.print')
     @patch('builtins.input', return_value="3")
