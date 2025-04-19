@@ -95,7 +95,7 @@ def get_all_users(stdscr):
             for p in tab:
                 stdscr.addstr(12, 0, f"{p['username']}")
         else:
-            new_user('invite')
+            new_user('invite', stdscr)
     return users_list
 
 
@@ -150,14 +150,18 @@ def delete_user(username: str, stdscr):
     filename = username + '.json'
     if users.__contains__(filename):
         os.remove(filename)  # Remove the user's json file
-        get_all_users()
+        get_all_users(stdscr)
         stdscr.addstr(12, 0, f"User {username} has been successfully deleted")
+        stdscr.refresh()
+        stdscr.getch()
     else:
         stdscr.addstr(12, 0, "User doesn't exist")
+        stdscr.refresh()
+        stdscr.getch()
 
 
 def update_username(username: str, new_username: str, stdscr):
-    get_all_users()
+    get_all_users(stdscr)
     if find_user(username):
         file_name = username + '.json'
         new_file_name = new_username + '.json'
@@ -174,7 +178,7 @@ def update_username(username: str, new_username: str, stdscr):
                 f.truncate()  # remove remaining part
             merge_json_files(users)
             os.rename(file_name, new_file_name)
-            get_all_users()
+            get_all_users(stdscr)
             stdscr.addstr(12, 0, f" The username {username} has been changed to {new_username}")
     else:
         stdscr.addstr(12, 0, f'The username {username} you have entered was not found')
@@ -234,7 +238,7 @@ def users_menu(stdscr):
             # stdscr.clear()
             stdscr.addstr(9, 0, 'Users list:\n')
             stdscr.refresh()
-            get_all_users()
+            get_all_users(stdscr)
             stdscr.addstr(10, 0, 'Press any key to continue')
             stdscr.getch()
         if manage_choice == 1:
@@ -251,7 +255,7 @@ def users_menu(stdscr):
                 stdscr.refresh()
                 stdscr.getch()
         if manage_choice == 2:
-            get_all_users()
+            get_all_users(stdscr)
             stdscr.addstr(9, 0, 'Type the username you want to create\n')
             curses.echo()
             username = stdscr.getstr(10, 0).decode('utf-8')
@@ -259,25 +263,26 @@ def users_menu(stdscr):
             new_user(username)
             stdscr.addstr(10, 0, 'Press any key to continue')
         if manage_choice == 3:
-            get_all_users()
-            username = input(
-                '''
-                Type user's username you want to change
-                ''')
-            new_username = input(
-                '''
-                Type the new username 
-                ''')
+            get_all_users(stdscr)
+            stdscr.addstr(9, 0, "Type user's username you want to change\n")
+            curses.echo()
+            username = stdscr.getstr(10, 0).decode('utf-8')
+            curses.noecho()
+            stdscr.addstr(11, 0, "Type the new username\n")
+            curses.echo()
+            new_username = stdscr.getstr(12, 0).decode('utf-8')
+            curses.noecho()
             update_username(username, new_username, stdscr)
         if manage_choice == 4:
-            get_all_users()
-            username = input(
-                '''
-                Type user's username who want
-                ''')
+            stdscr.clear()
+            get_all_users(stdscr)
+            stdscr.addstr(9, 0, "Type user's username who want to delete\n")
+            curses.echo()
+            username = stdscr.getstr(10, 0).decode('utf-8')
+            curses.noecho()
             delete_user(username, stdscr)
         if manage_choice == 5:
-            get_all_users()
+            get_all_users(stdscr)
             username = input(
                 '''
                 Type user's username you want

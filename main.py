@@ -44,7 +44,7 @@ def games_menu(stdscr):
     _, manage_choice = pick(options, title, screen=stdscr)
     if manage_choice == 0:
         player = choose_player(stdscr)
-        result = mystery_number.mystery_number(player)
+        result = mystery_number.mystery_number(player, stdscr)
         check_win(result)
     if manage_choice == 1:
         player = choose_player(stdscr)
