@@ -11,6 +11,24 @@ class TestUserManager(unittest.TestCase):
     def setUpClass(cls):
         user_manager.new_user('invite')
 
+    def test_add_fail(self):
+        user_manager.add_fail('invite')
+        with open('invite.json', 'r') as f:
+            data = f.read()
+            self.assertIn('"nbfail": 1', data)
+
+    def test_add_played_games(self):
+        user_manager.add_played_game('invite')
+        with open('invite.json', 'r') as f:
+            data = f.read()
+            self.assertIn('"played_games": 1', data)
+
+    def test_add_win(self):
+        user_manager.add_win('invite')
+        with open('invite.json', 'r') as f:
+            data = f.read()
+            self.assertIn('"nbwin": 1', data)
+
     def test_find_user(self):
         self.assertTrue(user_manager.find_user('invite'))
         self.assertFalse(user_manager.find_user('gab'))
@@ -32,9 +50,9 @@ class TestUserManager(unittest.TestCase):
         self.assertEqual(file.read(), """[
   {
     "username": "invite",
-    "played_games": 0,
-    "nbfail": 0,
-    "nbwin": 0,
+    "played_games": 1,
+    "nbfail": 1,
+    "nbwin": 1,
     "greatest_score": []
   },
   {
