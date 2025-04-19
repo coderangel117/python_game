@@ -43,42 +43,28 @@ class TestMain(unittest.TestCase):
         mock_print.assert_called_with('You loose because you are a monkey')
 
     @patch('builtins.print')
-    @patch('builtins.input', return_value='')
+    @patch('main.pick', return_value=('invite', 0))
     def test_choose_player_invite(self, mock_input, mock_print):
         self.assertEqual(main.choose_player(), "invite")
-        mock_input.assert_called_with('Which player do you want to play with ? \n')
-        mock_print.assert_called_with("Great ! You play as invite \nWARNING: The game won't count in user's stat ")
+        mock_input.assert_called_with(['invite', 'gab'], 'Which player do you want to play with ? \n')
+        mock_print.assert_called_with("Great ! You play as invite ")
 
     @patch('builtins.print')
-    @patch('builtins.input', return_value='gab')
+    @patch('main.pick', return_value=('gab', 0))
     def test_choose_player_ok(self, mock_input, mock_print):
         self.assertEqual(main.choose_player(), "gab")
-        mock_input.assert_called_with('Which player do you want to play with ? \n')
         mock_print.assert_called_with("Great ! You play as gab ")
 
     @patch('builtins.print')
-    @patch('builtins.input', side_effect=['foo', ''])
-    def test_choose_player_ko(self, mock_input, mock_print):
-        self.assertEqual(main.choose_player(), "invite")
-        mock_input.assert_called_with('Player not found, try again \n')
-        mock_print.assert_called_with("Great ! You play as invite \nWARNING: The game won't count in user's stat ")
-
-    @patch('builtins.print')
-    @patch('builtins.input', return_value="3")
+    @patch('main.pick', return_value=('Quit', 2))
     def test_main(self, mock_input, mock_print):
         self.assertEqual(main.main(), 1)
         mock_print.assert_called_with('Bye')
 
     @patch('builtins.print')
-    @patch('builtins.input', return_value="4")
+    @patch('main.pick', return_value=('Return to main menu', 3))
     def test_games_menu_return(self, mock_input, mock_print):
         self.assertEqual(main.games_menu(), "main")
-        mock_input.assert_called_with('''
-            [1] - Mystery number
-            [2] - Rock paper scissors
-            [3] - Tic Tac Toe
-            [4] - return to main menu
-            ''')
 
     def tearDown(self):
         os.remove('users.json')
