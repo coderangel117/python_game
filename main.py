@@ -25,12 +25,12 @@ def choose_player(stdscr):
             for i in range(len(tab)):
                 options.append(tab[i]['username'])
             player, index = pick(options, title, screen=stdscr)
-            print(f"Great ! You play as {player} ")
+            stdscr.addstr(9, 0, f"You play as {player} \n")
             return player
         else:
             print("No user found in list... \n"
                   "User invite (default) selected ")
-            user_manager.new_user('invite')
+            user_manager.new_user('invite', stdscr)
             return 'invite'  # if no user exists a default user is created and selected to play
 
 
