@@ -1,5 +1,7 @@
 import json
 
+from pick import pick
+
 import mystery_number
 import rock_paper_scissors
 import tic_tac_toe
@@ -17,34 +19,18 @@ def choose_player():
     with open('users.json') as users:
         tab = json.load(users)
         if tab:
-            i = 1
-            for p in tab:
-                if p['username'] == 'invite':
-                    print(f"{i} - {p['username']} (enter to choose) ")
-                else:
-                    print(f"{i} - {p['username']}")
-                i += 1
+            title = "Which player do you want to play with ? \n"
+            options = []
+            for i in range(len(tab)):
+                options.append(tab[i]['username'])
+            player, index = pick(options, title)
+            print(f"Great ! You play as {player} ")
+            return player
         else:
             print("No user found in list... \n"
                   "User invite (default) selected ")
             user_manager.new_user('invite')
             return 'invite'  # if no user exists a default user is created and selected to play
-        player = input('Which player do you want to play with ? \n')
-        player_exists = user_manager.get_user_files().__contains__(player + '.json')
-        if player == "":  # Select the default user (invite) ( don't count in user's stat)
-            print("Great ! You play as invite \n"
-                  "WARNING: The game won't count in user's stat ")
-            return "invite"
-        else:
-            while not player_exists:
-                player = input('Player not found, try again \n')
-                player_exists = user_manager.get_user_files().__contains__(player + '.json')
-                if player == "":
-                    print("Great ! You play as invite \n"
-                   "WARNING: The game won't count in user's stat ")
-                    return "invite"
-    print(f"Great ! You play as {player} ")
-    return player
 
 
 def games_menu():
@@ -52,31 +38,23 @@ def games_menu():
         Display games menu and user choose between games or return to main_menu
         :return: int
     """
-    manage_choice = 0
-    while manage_choice != 1 and manage_choice != 2 and manage_choice != 3 and manage_choice != 4:
-        manage_choice = input('''
-            [1] - Mystery number
-            [2] - Rock paper scissors
-            [3] - Tic Tac Toe
-            [4] - return to main menu
-            ''')
-        if not utils.check_special_characters(manage_choice):
-            manage_choice = 0
-        manage_choice = int(manage_choice)
-    if manage_choice == 1:
+    title = """ Choose your game """
+    options = ["Mystery number", "Rock paper scissors", "Tic Tac Toe", "Return to main menu"]
+    _, manage_choice = pick(options, title)
+    if manage_choice == 0:
         player = choose_player()
         result = mystery_number.mystery_number(player)
         check_win(result)
-    if manage_choice == 2:
+    if manage_choice == 1:
         player = choose_player()
         result = rock_paper_scissors.rock_paper_scissors(player)
         check_win(result)
-    if manage_choice == 3:
+    if manage_choice == 2:
         player = choose_player()
         result = tic_tac_toe.tic_tac_toe(player)
         check_win(result)
 
-    if manage_choice == 4:
+    if manage_choice == 3:
         return "main"
     return manage_choice
 
@@ -108,24 +86,16 @@ def check_win(game_result: []):
 
 def main():
     utils.init_json_files()
-    user_choice = 0
-    while user_choice != 1 and user_choice != 2 and user_choice != 3:
-        user_choice = input(
-            """
-            [1] - Start the game   
-            [2] - Manage users
-            [3] - Exit the game
-            """)
-        if not utils.check_special_characters(user_choice):
-            user_choice = 0
-        else:
-            user_choice = int(user_choice)
-    if user_choice == 1:
+    title = """ Welcome to the game center"""
+    options = ["Start", "Users menu", "Quit"]
+    _, user_choice = pick(options, title)
+    print(user_choice)
+    if user_choice == 0:
         result = games_menu()
         while result != "main":
             result = games_menu()
         main()
-    elif user_choice == 2:
+    elif user_choice == 1:
         choice = user_manager.users_menu()
         while choice != "main":
             choice = user_manager.users_menu()
