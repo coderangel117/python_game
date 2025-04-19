@@ -1,3 +1,4 @@
+import curses
 import glob
 import json
 import os
@@ -216,58 +217,68 @@ def add_fail(username: str):
         merge_json_files(users)  # Update the users.json
 
 
-def users_menu():
+def users_menu(stdscr):
     """
         Display users' manager menu and execute function with user's choice  or return to main menu
         :return: int
     """
-    title = 'Choose an action to do with users'
-    options = ['Display users list', 'Search a specific user', 'Create a new user',
-               'Update user username', 'Delete a user', 'Display user info', 'return to main menu']
-    _, manage_choice = pick(options, title)
+    while True:
+        title = 'Choose an action to do with users'
+        options = ['Display users list', 'Search a specific user', 'Create a new user',
+                   'Update user username', 'Delete a user', 'Display user info', 'return to main menu']
+        _, manage_choice = pick(options, title, screen=stdscr)
 
-    if manage_choice == 0:
-        get_all_users()
-    if manage_choice == 2:
-        username = input(
-            '''
-            Type user's username you want to show
-            ''')
-        if find_user(username):
-            print(username, 'is in the list')
-        else:
-            print("This user doesn't exist")
-    if manage_choice == 2:
-        get_all_users()
-        username = input(
-            '''
-            Type new user's username you want
-            ''')
-        new_user(username)
-    if manage_choice == 3:
-        get_all_users()
-        username = input(
-            '''
-            Type user's username you want to change
-            ''')
-        new_username = input(
-            '''
-            Type the new username 
-            ''')
-        update_username(username, new_username)
-    if manage_choice == 4:
-        get_all_users()
-        username = input(
-            '''
-            Type user's username who want
-            ''')
-        delete_user(username)
-    if manage_choice == 5:
-        get_all_users()
-        username = input(
-            '''
-            Type user's username you want
-            ''')
-        get_user_info(username)
-    if manage_choice == 6:
-        return "main"
+        if manage_choice == 0:
+            # stdscr.clear()
+            stdscr.addstr(9, 0, 'Users list:\n')
+            stdscr.refresh()
+            get_all_users()
+            stdscr.addstr(10, 0, 'Press any key to continue')
+            stdscr.getch()
+        if manage_choice == 1:
+            stdscr.addstr(9, 0, 'Type the username you want to search\n')
+            curses.echo()
+            username = stdscr.getstr(10, 0).decode('utf-8')
+            curses.noecho()
+            if find_user(username):
+                stdscr.addstr(12, 0, f'{username} is in the list')
+                stdscr.refresh()
+                stdscr.getch()
+            else:
+                stdscr.addstr(12, 0, f'{username} is not in the list')
+                stdscr.refresh()
+                stdscr.getch()
+        if manage_choice == 2:
+            get_all_users()
+            username = input(
+                '''
+                Type new user's username you want
+                ''')
+            new_user(username)
+        if manage_choice == 3:
+            get_all_users()
+            username = input(
+                '''
+                Type user's username you want to change
+                ''')
+            new_username = input(
+                '''
+                Type the new username 
+                ''')
+            update_username(username, new_username)
+        if manage_choice == 4:
+            get_all_users()
+            username = input(
+                '''
+                Type user's username who want
+                ''')
+            delete_user(username)
+        if manage_choice == 5:
+            get_all_users()
+            username = input(
+                '''
+                Type user's username you want
+                ''')
+            get_user_info(username)
+        if manage_choice == 6:
+            return "main"

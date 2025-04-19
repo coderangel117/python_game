@@ -1,6 +1,6 @@
+import curses
 import json
 
-import curses
 from pick import pick
 
 import mystery_number
@@ -10,7 +10,7 @@ import user_manager
 import utils
 
 
-def choose_player():
+def choose_player(stdscr):
     """
         user can choose with wich profile he wants to play
         :return: str
@@ -24,7 +24,7 @@ def choose_player():
             options = []
             for i in range(len(tab)):
                 options.append(tab[i]['username'])
-            player, index = pick(options, title)
+            player, index = pick(options, title, screen=stdscr)
             print(f"Great ! You play as {player} ")
             return player
         else:
@@ -34,24 +34,24 @@ def choose_player():
             return 'invite'  # if no user exists a default user is created and selected to play
 
 
-def games_menu():
+def games_menu(stdscr):
     """
         Display games menu and user choose between games or return to main_menu
         :return: int
     """
     title = """ Choose your game """
     options = ["Mystery number", "Rock paper scissors", "Tic Tac Toe", "Return to main menu"]
-    _, manage_choice = pick(options, title)
+    _, manage_choice = pick(options, title, screen=stdscr)
     if manage_choice == 0:
-        player = choose_player()
+        player = choose_player(stdscr)
         result = mystery_number.mystery_number(player)
         check_win(result)
     if manage_choice == 1:
-        player = choose_player()
+        player = choose_player(stdscr)
         result = rock_paper_scissors.rock_paper_scissors(player)
         check_win(result)
     if manage_choice == 2:
-        player = choose_player()
+        player = choose_player(stdscr)
         result = tic_tac_toe.tic_tac_toe(player)
         check_win(result)
 
@@ -85,27 +85,30 @@ def check_win(game_result: []):
         return False
 
 
-def main():
+def main(stdscr):
     utils.init_json_files()
-    title = """ Welcome to the game center"""
-    options = ["Start", "Users menu", "Quit"]
-    _, user_choice = pick(options, title)
-    if user_choice == 0:
-        result = games_menu()
-        while result != "main":
-            result = games_menu()
-        main()
-    elif user_choice == 1:
-        choice = user_manager.users_menu()
-        while choice != "main":
-            choice = user_manager.users_menu()
-        main()
-    else:
-        print("Bye")
-        return 1
+    running = True
+    while running:
+        title = "Welcome to the game center"
+        options = ["Start", "Users menu", "Quit"]
+        _, user_choice = pick(options, title, screen=stdscr)
+        if user_choice == 0:
+            result = games_menu(stdscr)
+            while result != "main":
+                result = games_menu(stdscr)
+        elif user_choice == 1:
+            choice = user_manager.users_menu(stdscr)
+            while choice != "main":
+                choice = user_manager.users_menu(stdscr)
+        else:
+            running = False
+            stdscr.addstr("Bye\n")
+            stdscr.refresh()
+            return 1
+
 
 if __name__ == '__main__':
     try:
-        curses.wrapper(main())
+        curses.wrapper(main)
     except KeyboardInterrupt:
         utils.handle_exit()

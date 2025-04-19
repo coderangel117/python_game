@@ -37,6 +37,5 @@ def init_json_files():
 
 def handle_exit():
     print("\nSaving your progress...")
-# @TODO: Ajouter une logique de sauvegarde
-print("Progress saved.")
-print("Goodbye, adventurer!")
+    # @TODO: Ajouter une logique de sauvegarde
+    print("Progress saved.")
