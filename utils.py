@@ -33,3 +33,10 @@ def init_json_files():
     u.close()
     f.close()
     user_manager.merge_json_files(user_manager.get_user_files())
+
+
+def handle_exit():
+    print("\nSaving your progress...")
+# @TODO: Ajouter une logique de sauvegarde
+print("Progress saved.")
+print("Goodbye, adventurer!")

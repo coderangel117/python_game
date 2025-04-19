@@ -1,5 +1,6 @@
 import json
 
+import curses
 from pick import pick
 
 import mystery_number
@@ -89,7 +90,6 @@ def main():
     title = """ Welcome to the game center"""
     options = ["Start", "Users menu", "Quit"]
     _, user_choice = pick(options, title)
-    print(user_choice)
     if user_choice == 0:
         result = games_menu()
         while result != "main":
@@ -104,6 +104,8 @@ def main():
         print("Bye")
         return 1
 
-
 if __name__ == '__main__':
-    main()
+    try:
+        curses.wrapper(main())
+    except KeyboardInterrupt:
+        utils.handle_exit()

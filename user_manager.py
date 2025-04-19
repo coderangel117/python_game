@@ -2,7 +2,8 @@ import glob
 import json
 import os
 
-import utils
+from pick import pick
+
 from User import User
 
 
@@ -220,22 +221,12 @@ def users_menu():
         Display users' manager menu and execute function with user's choice  or return to main menu
         :return: int
     """
-    manage_choice = 0
-    while manage_choice != 1 and manage_choice != 2 and manage_choice != 3 and manage_choice != 4 \
-            and manage_choice != 5 and manage_choice != 6 and manage_choice != 7:
-        manage_choice = input('''
-        [1] - Display users list    
-        [2] - Search a specific user    
-        [3] - Create a new user
-        [4] - Update user username
-        [5] - Delete a user
-        [6] - Display user info
-        [7] - return to main menu
-        ''')
-        if not utils.check_special_characters(manage_choice):
-            manage_choice = 0
-        manage_choice = int(manage_choice)
-    if manage_choice == 1:
+    title = 'Choose an action to do with users'
+    options = ['Display users list', 'Search a specific user', 'Create a new user',
+               'Update user username', 'Delete a user', 'Display user info', 'return to main menu']
+    _, manage_choice = pick(options, title)
+
+    if manage_choice == 0:
         get_all_users()
     if manage_choice == 2:
         username = input(
@@ -243,35 +234,17 @@ def users_menu():
             Type user's username you want to show
             ''')
         if find_user(username):
-            response = int(input(f"This user exist in the list\n"
-                                 f"Would you realize an action on this user ?\n"
-                                 f"1 - Go user's stats\n"
-                                 f"2 - Update this user\n"
-                                 f"3 - Delete this user\n"
-                                 f"4 - Return to the previous menu\n"))
-            if response == 1:
-                get_user_info(username)
-            if response == 2:
-                new_username = input(
-                    '''
-                    Type the new username 
-                    ''')
-                update_username(username, new_username)
-            if response == 3:
-                delete_user(username)
-                print("This user is deleted")
-            if response == 4:
-                users_menu()
+            print(username, 'is in the list')
         else:
             print("This user doesn't exist")
-    if manage_choice == 3:
+    if manage_choice == 2:
         get_all_users()
         username = input(
             '''
             Type new user's username you want
             ''')
         new_user(username)
-    if manage_choice == 4:
+    if manage_choice == 3:
         get_all_users()
         username = input(
             '''
@@ -282,19 +255,19 @@ def users_menu():
             Type the new username 
             ''')
         update_username(username, new_username)
-    if manage_choice == 5:
+    if manage_choice == 4:
         get_all_users()
         username = input(
             '''
             Type user's username who want
             ''')
         delete_user(username)
-    if manage_choice == 6:
+    if manage_choice == 5:
         get_all_users()
         username = input(
             '''
             Type user's username you want
             ''')
         get_user_info(username)
-    if manage_choice == 7:
+    if manage_choice == 6:
         return "main"
