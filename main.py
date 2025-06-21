@@ -8,39 +8,45 @@ import rock_paper_scissors
 import tic_tac_toe
 import user_manager
 import utils
+import snake
 
 
 def choose_player(stdscr):
     """
-        user can choose with wich profile he wants to play
-        :return: str
+    user can choose with wich profile he wants to play
+    :return: str
     """
     users = user_manager.get_user_files()
     user_manager.merge_json_files(users)
-    with open('users.json') as users:
+    with open("users.json") as users:
         tab = json.load(users)
         if tab:
             title = "Which player do you want to play with ? \n"
             options = []
             for i in range(len(tab)):
-                options.append(tab[i]['username'])
+                options.append(tab[i]["username"])
             player, index = pick(options, title, screen=stdscr)
             stdscr.addstr(9, 0, f"You play as {player} \n")
             return player
         else:
-            print("No user found in list... \n"
-                  "User invite (default) selected ")
-            user_manager.new_user('invite', stdscr)
-            return 'invite'  # if no user exists a default user is created and selected to play
+            print("No user found in list... \nUser invite (default) selected ")
+            user_manager.new_user("invite", stdscr)
+            return "invite"  # if no user exists a default user is created and selected to play
 
 
 def games_menu(stdscr):
     """
-        Display games menu and user choose between games or return to main_menu
-        :return: int
+    Display games menu and user choose between games or return to main_menu
+    :return: int
     """
     title = """ Choose your game """
-    options = ["Mystery number", "Rock paper scissors", "Tic Tac Toe", "Return to main menu"]
+    options = [
+        "Mystery number",
+        "Rock paper scissors",
+        "Tic Tac Toe",
+        "Snake",
+        "Return to main menu",
+    ]
     _, manage_choice = pick(options, title, screen=stdscr)
     if manage_choice == 0:
         player = choose_player(stdscr)
@@ -54,18 +60,21 @@ def games_menu(stdscr):
         player = choose_player(stdscr)
         result = tic_tac_toe.tic_tac_toe(player)
         check_win(result)
-
     if manage_choice == 3:
+        player = choose_player(stdscr)
+        result = snake.snake(player, stdscr)
+        check_win(result)
+    if manage_choice == 4:
         return "main"
     return manage_choice
 
 
 def check_win(game_result: []):
     """
-        Check and return true if user wins
-        increment nb fail or nbwin user's property if fails or wins
-        :param: array
-        :return: boolean
+    Check and return true if user wins
+    increment nb fail or nbwin user's property if fails or wins
+    :param: array
+    :return: boolean
     """
     user_manager.add_played_game(game_result[2])
     if game_result[0] == 1:
@@ -73,14 +82,18 @@ def check_win(game_result: []):
             print(f"You won with {game_result[1]} attempts")
         elif game_result[3] == "shifoumi":
             print(f"You won with {game_result[1]} points")
+        elif game_result[3] == "snake":
+            print(f"You ate {game_result[1]} apples")
         user_manager.add_win(game_result[2])
         return True
+
     elif game_result[0] == -1:
-        print("You loose because you doesn't find the number before the last attempt")
+        print("""You loose because you doesn't
+            find the number before the last attempt""")
         user_manager.add_fail(game_result[2])
         return False
     elif game_result[0] == -2:
-        print('You loose because you are a monkey')
+        print("You loose because you are a monkey")
         user_manager.add_fail(game_result[2])
         return False
 
@@ -107,7 +120,7 @@ def main(stdscr):
             return 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     try:
         curses.wrapper(main)
     except KeyboardInterrupt:
