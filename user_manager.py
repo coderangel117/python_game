@@ -16,26 +16,26 @@ def get_user_files():
     users = []
     for file in glob.glob("*.json"):
         users.append(file)
-    if users.__contains__('users.json'):
-        users.remove('users.json')  # Remove users.json from list
+    if users.__contains__("users.json"):
+        users.remove("users.json")  # Remove users.json from list
     else:
-        with open("users.json", 'w') as file:  # Create the file if not exists
-            file.write('[]')
+        with open("users.json", "w") as file:  # Create the file if not exists
+            file.write("[]")
             file.close()
     return users
 
 
 def merge_json_files(filename: list[str]):
     """
-        Merge all user's json files in one
-        :param filename:
-        :return:
+    Merge all user's json files in one
+    :param filename:
+    :return:
     """
     result = list()
     for f1 in filename:
-        with open(f1, 'r') as infile:
+        with open(f1, "r") as infile:
             result.append(json.load(infile))
-    with open('users.json', 'w') as output_file:
+    with open("users.json", "w") as output_file:
         json.dump(result, output_file, indent=2)
 
 
@@ -45,7 +45,7 @@ def find_user(username: str):
     :param username:
     :return: boolean
     """
-    if get_user_files().__contains__(username + '.json'):
+    if get_user_files().__contains__(username + ".json"):
         return True
     else:
         return False
@@ -53,9 +53,9 @@ def find_user(username: str):
 
 def save_user(user: User):
     """
-        Create a json file with user's information
-        :param user:
-        :return:
+    Create a json file with user's information
+    :param user:
+    :return:
     """
     # All default value are 0 without username
 
@@ -70,11 +70,11 @@ def save_user(user: User):
     file_name = user.username + ".json"
     users.append(file_name)
     json_string = {
-        'username': username,
-        'played_games': played_games,  # default value to 0
-        'nbfail': nbfail,  # default value to 0
-        'nbwin': nbwin,  # default value to 0
-        'greatest_score': greatest_score,  # default value to 0
+        "username": username,
+        "played_games": played_games,  # default value to 0
+        "nbfail": nbfail,  # default value to 0
+        "nbwin": nbwin,  # default value to 0
+        "greatest_score": greatest_score,  # default value to 0
     }
 
     file = open(file_name, "w")
@@ -89,13 +89,15 @@ def get_all_users(stdscr):
     """
     users_list = get_user_files()
     merge_json_files(users_list)
-    with open('users.json') as users:
+    with open("users.json") as users:
+        line = 11
         tab = json.load(users)
         if tab:
             for p in tab:
-                stdscr.addstr(12, 0, f"{p['username']}")
+                stdscr.addstr(line, 0, f"{p['username']}")
+                line += 1
         else:
-            new_user('invite', stdscr)
+            new_user("invite", stdscr)
     return users_list
 
 
@@ -123,31 +125,47 @@ def get_user_info(username: str, stdscr):
     :return:str
     """
     users = get_user_files()
-    file_name = username + '.json'
+    file_name = username + ".json"
     if users.__contains__(file_name):
-        with open(file_name, 'r+') as f:
+        with open(file_name, "r+") as f:
             data = json.load(f)
-            if data['played_games'] > 0:
-                if data['nbfail'] > 0 or data['nbwin'] > 0:
-                    if data['played_games'] == data['nbfail'] + data['nbwin']:  # Check if stats can be coherent
-                        stdscr.addstr(12, 0, f"User {data['username']} has {data['played_games']} played games ")
-                        stdscr.addstr(13, 0,
-                                      f"with {data['nbfail']} fails ({int((data['nbfail'] / data['played_games']) * 100)}%) ")
-                        stdscr.addstr(14, 0,
-                                      f"and {data['nbwin']} wons ({int((data['nbwin'] / data['played_games']) * 100)}%)")
+            if data["played_games"] > 0:
+                if data["nbfail"] > 0 or data["nbwin"] > 0:
+                    if (
+                        data["played_games"] == data["nbfail"] + data["nbwin"]
+                    ):  # Check if stats can be coherent
+                        stdscr.addstr(
+                            12,
+                            0,
+                            f"User {data['username']} has {data['played_games']} played games ",
+                        )
+                        stdscr.addstr(
+                            13,
+                            0,
+                            f"with {data['nbfail']} fails ({int((data['nbfail'] / data['played_games']) * 100)}%) ",
+                        )
+                        stdscr.addstr(
+                            14,
+                            0,
+                            f"and {data['nbwin']} wons ({int((data['nbwin'] / data['played_games']) * 100)}%)",
+                        )
                     else:
-                        stdscr.addstr(12, 0, 'There are error in played games count....')
+                        stdscr.addstr(
+                            12, 0, "There are error in played games count...."
+                        )
                 else:
-                    stdscr.addstr(12, 0, 'There are error in win or fail count....')
+                    stdscr.addstr(12, 0, "There are error in win or fail count....")
             else:
-                stdscr.addstr(12, 0, "User {data['username']} have never played")
+                stdscr.addstr(12, 0, f"User {data['username']} have never played")
     else:
         stdscr.addstr(12, 0, "User chosen doesn't exists")
+    stdscr.refresh()
+    stdscr.getch()
 
 
 def delete_user(username: str, stdscr):
     users = get_user_files()
-    filename = username + '.json'
+    filename = username + ".json"
     if users.__contains__(filename):
         os.remove(filename)  # Remove the user's json file
         get_all_users(stdscr)
@@ -163,33 +181,35 @@ def delete_user(username: str, stdscr):
 def update_username(username: str, new_username: str, stdscr):
     get_all_users(stdscr)
     if find_user(username):
-        file_name = username + '.json'
-        new_file_name = new_username + '.json'
+        file_name = username + ".json"
+        new_file_name = new_username + ".json"
         users = get_user_files()
         if users.__contains__(new_file_name):
             stdscr.addstr(12, 0, f"User {username} already exists.")
         else:
-            with open(file_name, 'r+') as f:
+            with open(file_name, "r+") as f:
                 users = get_user_files()
                 data = json.load(f)
-                data['username'] = new_username  # change `username` value.
+                data["username"] = new_username  # change `username` value.
                 f.seek(0)  # should reset file position to the beginning.
                 json.dump(data, f, indent=2)
                 f.truncate()  # remove remaining part
             merge_json_files(users)
             os.rename(file_name, new_file_name)
             get_all_users(stdscr)
-            stdscr.addstr(12, 0, f" The username {username} has been changed to {new_username}")
+            stdscr.addstr(
+                12, 0, f" The username {username} has been changed to {new_username}"
+            )
     else:
-        stdscr.addstr(12, 0, f'The username {username} you have entered was not found')
+        stdscr.addstr(12, 0, f"The username {username} you have entered was not found")
 
 
 def add_win(username: str):
     if find_user(username):
-        file_name = username + '.json'
-        with open(file_name, 'r+') as f:
+        file_name = username + ".json"
+        with open(file_name, "r+") as f:
             data = json.load(f)
-            data['nbwin'] += 1  # increase win stat value.
+            data["nbwin"] += 1  # increase win stat value.
             f.seek(0)  # should reset file position to the beginning.
             json.dump(data, f, indent=2)
             f.truncate()  # remove remaining part
@@ -199,10 +219,10 @@ def add_win(username: str):
 
 def add_played_game(username: str):
     if find_user(username):
-        file_name = username + '.json'
-        with open(file_name, 'r+') as f:
+        file_name = username + ".json"
+        with open(file_name, "r+") as f:
             data = json.load(f)
-            data['played_games'] += 1  # change played game value.
+            data["played_games"] += 1  # change played game value.
             f.seek(0)  # should reset file position to the beginning.
             json.dump(data, f, indent=2)
             f.truncate()  # remove remaining part
@@ -212,10 +232,10 @@ def add_played_game(username: str):
 
 def add_fail(username: str):
     if find_user(username):
-        file_name = username + '.json'  # Get user's file
-        with open(file_name, 'r+') as f:
+        file_name = username + ".json"  # Get user's file
+        with open(file_name, "r+") as f:
             data = json.load(f)  # load file
-            data['nbfail'] += 1  # increase fail value.
+            data["nbfail"] += 1  # increase fail value.
             f.seek(0)  # should reset file position to the beginning.
             json.dump(data, f, indent=2)
             f.truncate()  # remove remaining part
@@ -225,52 +245,59 @@ def add_fail(username: str):
 
 def users_menu(stdscr):
     """
-        Display users' manager menu and execute function with user's choice  or return to main menu
-        :return: int
+    Display users' manager menu and execute function with user's choice  or return to main menu
+    :return: int
     """
     while True:
-        title = 'Choose an action to do with users'
-        options = ['Display users list', 'Search a specific user', 'Create a new user',
-                   'Update user username', 'Delete a user', 'Display user info', 'return to main menu']
+        title = "Choose an action to do with users"
+        options = [
+            "Display users list",
+            "Search a specific user",
+            "Create a new user",
+            "Update user username",
+            "Delete a user",
+            "Display user info",
+            "return to main menu",
+        ]
         _, manage_choice = pick(options, title, screen=stdscr)
 
         if manage_choice == 0:
             # stdscr.clear()
-            stdscr.addstr(9, 0, 'Users list:\n')
-            stdscr.refresh()
+            stdscr.addstr(9, 0, "Users list:\n")
             get_all_users(stdscr)
-            stdscr.addstr(10, 0, 'Press any key to continue')
+            stdscr.refresh()
+            stdscr.addstr(15, 0, "Press any key to continue")
             stdscr.getch()
         if manage_choice == 1:
-            stdscr.addstr(9, 0, 'Type the username you want to search\n')
+            stdscr.addstr(9, 0, "Type the username you want to search\n")
             curses.echo()
-            username = stdscr.getstr(10, 0).decode('utf-8')
+            username = stdscr.getstr(10, 0).decode("utf-8")
             curses.noecho()
             if find_user(username):
-                stdscr.addstr(12, 0, f'{username} is in the list')
+                stdscr.addstr(12, 0, f"{username} is in the list")
                 stdscr.refresh()
                 stdscr.getch()
             else:
-                stdscr.addstr(12, 0, f'{username} is not in the list')
+                stdscr.addstr(12, 0, f"{username} is not in the list")
                 stdscr.refresh()
                 stdscr.getch()
         if manage_choice == 2:
             get_all_users(stdscr)
-            stdscr.addstr(9, 0, 'Type the username you want to create\n')
+            stdscr.addstr(9, 0, "Type the username you want to create\n")
             curses.echo()
-            username = stdscr.getstr(10, 0).decode('utf-8')
+            username = stdscr.getstr(10, 0).decode("utf-8")
             curses.noecho()
-            new_user(username)
-            stdscr.addstr(10, 0, 'Press any key to continue')
+            new_user(username, stdscr)
+            stdscr.addstr(10, 0, "Press any key to continue")
         if manage_choice == 3:
             get_all_users(stdscr)
             stdscr.addstr(9, 0, "Type user's username you want to change\n")
             curses.echo()
-            username = stdscr.getstr(10, 0).decode('utf-8')
+            username = stdscr.getstr(10, 0).decode("utf-8")
             curses.noecho()
             stdscr.addstr(11, 0, "Type the new username\n")
             curses.echo()
-            new_username = stdscr.getstr(12, 0).decode('utf-8')
+            new_username = stdscr.getstr(12, 0).decode("utf-8")
             curses.noecho()
             update_username(username, new_username, stdscr)
         if manage_choice == 4:
@@ -278,15 +305,14 @@ def users_menu(stdscr):
             get_all_users(stdscr)
             stdscr.addstr(9, 0, "Type user's username who want to delete\n")
             curses.echo()
-            username = stdscr.getstr(10, 0).decode('utf-8')
+            username = stdscr.getstr(10, 0).decode("utf-8")
             curses.noecho()
             delete_user(username, stdscr)
         if manage_choice == 5:
             get_all_users(stdscr)
-            username = input(
-                '''
-                Type user's username you want
-                ''')
+            username = stdscr.addstr(10, 0, " Type user's username you want\n")
+            curses.echo()
+            username = stdscr.getstr(15, 0).decode("utf-8")
             get_user_info(username, stdscr)
         if manage_choice == 6:
             return "main"

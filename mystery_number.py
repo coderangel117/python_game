@@ -24,24 +24,34 @@ def mystery_number(player: str, stdscr) -> []:
     random_number = random.randint(number_min, number_max)
     stdscr.clear()
     stdscr.refresh()
-    stdscr.addstr(0, 0,
-                  f"Hello {player}, try to find the mystery number between {number_min} and {number_max}  ({random_number} attempts) )")
-    stdscr.addstr(1, 0, 'Press any key to start the game')
+    stdscr.addstr(
+        0,
+        0,
+        f"Hello {player}, try to find the mystery number between {number_min} and {number_max}  ({random_number} attempts) )",
+    )
+    stdscr.addstr(1, 0, "Press any key to start the game")
     stdscr.getch()
     stdscr.clear()
     while win == 0 & fail_counter is not True:
-        while user_number != random_number | fail_counter is not True | win != -1 | win != -2:
-            stdscr.addstr(1, 0, 'Type a number between 1 and 100\n')
+        while (
+            user_number
+            != random_number | fail_counter
+            is not True | win
+            != -1 | win
+            != -2
+        ):
+            stdscr.clear()
+            stdscr.addstr(1, 0, "Type a number between 1 and 100\n")
             curses.echo()
             stdscr.refresh()
             try:
-                user_number = stdscr.getstr(2, 0).decode('utf-8')
+                user_number = stdscr.getstr(2, 0).decode("utf-8")
             except curses.error:
                 break
             curses.noecho()
             if not check_special_characters(user_number):
                 force_counter += 1
-                stdscr.addstr(3, 0, 'Press a key to continue')
+                stdscr.addstr(3, 0, "Press a key to continue")
                 stdscr.refresh()
                 stdscr.getch()
                 stdscr.clear()
@@ -52,7 +62,9 @@ def mystery_number(player: str, stdscr) -> []:
                     win = -2
                     break
                 else:
-                    stdscr.addstr(3, 0, f"It's between {number_min} and {number_max} ....")
+                    stdscr.addstr(
+                        3, 0, f"It's between {number_min} and {number_max} ...."
+                    )
                     force_counter += 1
                     break
             if user_number == random_number:
@@ -60,13 +72,17 @@ def mystery_number(player: str, stdscr) -> []:
                 win = 1
                 break
             if user_number > random_number:
-                stdscr.addstr(3, 0, 'Your number is bigger than the mystery number')
+                stdscr.addstr(3, 0, "Your number is bigger than the mystery number")
                 if counter < (max_counter - 1):
-                    stdscr.addstr(4, 0, f" You have  {(max_counter - 1) - counter} attempts")
+                    stdscr.addstr(
+                        4, 0, f" You have  {(max_counter - 1) - counter} attempts"
+                    )
             if user_number < random_number:
-                stdscr.addstr(3, 0, 'Your number is smaller than the mystery number')
+                stdscr.addstr(3, 0, "Your number is smaller than the mystery number")
                 if counter < (max_counter - 1):
-                    stdscr.addstr(4, 0, f"You have {(max_counter - 1) - counter} attempts yet")
+                    stdscr.addstr(
+                        4, 0, f"You have {(max_counter - 1) - counter} attempts yet"
+                    )
             counter += 1
             if counter == max_counter:
                 fail_counter = True

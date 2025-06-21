@@ -8,7 +8,7 @@ This project is a CLI program that allows you to play different games.
 
 To install the project, you need to clone the repository.
 
-```bash 
+```bash
 git clone https://github.com/coderangel117/python_game.git
 cd python_game
 ```
@@ -41,10 +41,9 @@ You can add, update, delete or list users. You can also view stats about a user.
 There is some json files in the data folder that contains the user's data.
 If you delete the files, you will lose all the data.
 
-
 ### Future games
 
-possible_games_list = ["Pendu alias hang_man", "Roulette", "bingo",]
+possible_games_list = ["Pendu alias hang_man", "Roulette", "bingo", "snake_game"]
 
 ## Next features
 
