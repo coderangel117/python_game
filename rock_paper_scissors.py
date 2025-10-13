@@ -1,7 +1,8 @@
 import random
+from pick import pick
 
 
-def rock_paper_scissors(player: str):
+def rock_paper_scissors(player: str, stdscr):
     return_table = []
     win = 0  # When user finds the great number
     user_point = 0
@@ -12,30 +13,37 @@ def rock_paper_scissors(player: str):
             ia_movement = 0
             ia_movement = random.choice([1, 2, 3])
             choice = ["rock", "paper", "scissors"]
-            user_movement = int(input(""" Which movement want you to do ?
-            Please type 
-            '1' - rock
-            '2' - paper
-            '3' - scissors
-            """))
+            title = f"""Which movement want you to do ?\n
+            1 - rock
+            2 - paper
+            3 - scissors"""
+            options = [1, 2 ,3]
+            user_movement = pick(options, title, screen=stdscr)
+            stdscr.refresh()
+            user_movement = user_movement[0]
             if user_movement in (1, 2, 3):
-                print(f" You choose {choice[user_movement - 1]}\n"
-                      f" ia choose {choice[ia_movement - 1]}")
+                stdscr.refresh()
                 if ia_movement == user_movement:
-                    print("No winner")
+                    stdscr.addstr(7, 0, "No winner")
+                    stdscr.refresh()
+                    stdscr.getch()
                 if ia_movement < user_movement:
                     if ia_movement == 1 and user_movement == 3:
-                        print("you lose")
+                        stdscr.addstr(7, 0, "you lose")
+                        stdscr.getch()
                         ia_point += 1
                     else:
-                        print("you win")
+                        stdscr.addstr(7, 0, "you win")
+                        stdscr.getch()
                         user_point += 1
                 elif user_movement < ia_movement:
                     if ia_movement == 3 and user_movement == 1:
-                        print("you win")
+                        stdscr.addstr(7, 0, "You win")
+                        stdscr.getch()
                         user_point += 1
                     else:
-                        print("you lose")
+                        stdscr.addstr(7, 0, "you lose")
+                        stdscr.getch()
                         ia_point += 1
                 if ia_point > 2:
                     win = -1
@@ -43,9 +51,16 @@ def rock_paper_scissors(player: str):
                 if user_point > 2:
                     win = 1
                     break
-                print(f"You : {user_point} \n IA : {ia_point}")
+                stdscr.addstr(8, 0, f"You : {user_point} IA : {ia_point}")
+                stdscr.getch()
             else:
-                print("Please type '1' for rock or '2' for paper or '3' for scissors ")
+                stdscr.addstr(
+                    5,
+                    0,
+                    "Please type '1' for rock or '2' for paper or '3' for scissors ",
+                )
+                stdscr.refresh()
+                stdscr.getch()
     return_table.append(win)
     return_table.append(user_point)
     return_table.append(player)

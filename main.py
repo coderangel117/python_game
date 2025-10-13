@@ -51,25 +51,25 @@ def games_menu(stdscr):
     if manage_choice == 0:
         player = choose_player(stdscr)
         result = mystery_number.mystery_number(player, stdscr)
-        check_win(result)
+        check_win(result, stdscr)
     if manage_choice == 1:
         player = choose_player(stdscr)
-        result = rock_paper_scissors.rock_paper_scissors(player)
-        check_win(result)
+        result = rock_paper_scissors.rock_paper_scissors(player, stdscr)
+        check_win(result, stdscr)
     if manage_choice == 2:
         player = choose_player(stdscr)
-        result = tic_tac_toe.tic_tac_toe(player)
-        check_win(result)
+        result = tic_tac_toe.tic_tac_toe(player, stdscr)
+        check_win(result, stdscr)
     if manage_choice == 3:
         player = choose_player(stdscr)
         result = snake.snake(player, stdscr)
-        check_win(result)
+        check_win(result, stdscr)
     if manage_choice == 4:
         return "main"
     return manage_choice
 
 
-def check_win(game_result: []):
+def check_win(game_result: [], stdscr):
     """
     Check and return true if user wins
     increment nb fail or nbwin user's property if fails or wins
@@ -79,11 +79,11 @@ def check_win(game_result: []):
     user_manager.add_played_game(game_result[2])
     if game_result[0] == 1:
         if game_result[3] == "mystery_number":
-            print(f"You won with {game_result[1]} attempts")
+            stdscr.addstr(3,0,f"You won with {game_result[1]} attempts")
         elif game_result[3] == "shifoumi":
-            print(f"You won with {game_result[1]} points")
+            stdscr.addstr(3,0,f"You won with {game_result[1]} points")
         elif game_result[3] == "snake":
-            print(f"You ate {game_result[1]} apples")
+            stdscr.addstr(3,0,f"You ate {game_result[1]} apples")
         user_manager.add_win(game_result[2])
         return True
 

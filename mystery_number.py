@@ -65,9 +65,14 @@ def mystery_number(player: str, stdscr) -> []:
                     stdscr.addstr(
                         3, 0, f"It's between {number_min} and {number_max} ...."
                     )
+                    stdscr.refresh()
                     force_counter += 1
                     break
             if user_number == random_number:
+                stdscr.addstr(3, 0, "You found the mystery number! Congrats")
+                stdscr.addstr(4, 0, "Press any key to continue")
+                stdscr.refresh()
+                stdscr.getch()
                 counter += 1
                 win = 1
                 break
@@ -77,17 +82,22 @@ def mystery_number(player: str, stdscr) -> []:
                     stdscr.addstr(
                         4, 0, f" You have  {(max_counter - 1) - counter} attempts"
                     )
+                    stdscr.refresh()
+                    stdscr.getch()
             if user_number < random_number:
                 stdscr.addstr(3, 0, "Your number is smaller than the mystery number")
                 if counter < (max_counter - 1):
                     stdscr.addstr(
                         4, 0, f"You have {(max_counter - 1) - counter} attempts yet"
                     )
+                    stdscr.refresh()
+                    stdscr.getch()
             counter += 1
             if counter == max_counter:
                 fail_counter = True
                 stdscr.addstr(5, 0, "You have exceeded the maximum number of attempts")
                 stdscr.addstr(6, 0, f"the mystery number was {random_number}")
+                stdscr.refresh()
                 stdscr.getch()
                 win = -1
     return_table.append(win)
