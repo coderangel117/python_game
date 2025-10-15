@@ -99,7 +99,8 @@ def check_win(game_result: [], stdscr):
 
 
 def main(stdscr):
-    utils.init_json_files()
+    if not user_manager.find_user("invite"):
+        utils.init_json_files()
     running = True
     while running:
         title = "Welcome to the game center"
