@@ -15,7 +15,6 @@ def tic_tac_toe(player: str, stdscr):
     stdscr.addstr(1,0,"You are player 1\n")
     stdscr.getch()
     while win == 0 and win != "tie":
-        stdscr.clear()
         empty_cell = 0
         stdscr.addstr(2,0,f"Player {player_turn}'s turn")
         display_game_plate(game_plate, stdscr)
@@ -23,9 +22,6 @@ def tic_tac_toe(player: str, stdscr):
         options = [0, 1, 2]
         option_x, player_coordinate_x = pick(options, "Please type coordinate for the row you choose\n", screen=stdscr )
         option_y, player_coordinate_y = pick(options, "Please type coordinate for the column you choose\n", screen=stdscr )
-        stdscr.addstr(6, 0, f"{option_x}, {player_coordinate_x }, ")
-        stdscr.addstr(7, 0, f"{option_y}, {player_coordinate_y} ")
-        stdscr.getch()
         coordinates = verify_coordinate(
             player_coordinate_x, player_coordinate_y, game_plate, stdscr
         )
@@ -41,8 +37,6 @@ def tic_tac_toe(player: str, stdscr):
                     points = 1
                     break
             player_turn *= -1
-        else:
-            stdscr.addstr("Invalid move. Try again.")
         # check tie
         for i in range(3):
             for j in range(3):
@@ -50,6 +44,7 @@ def tic_tac_toe(player: str, stdscr):
                     empty_cell += 1
         if empty_cell == 0:
             stdscr.addstr("it's a tie")
+            stdscr.getch()
             win = "tie"
     return [win, points, player, "tic tac toe"]
 
@@ -62,7 +57,6 @@ def verify_coordinate(player_coordinate_x: str, player_coordinate_y: str, game_p
     :param game_plate: The current game board.
     :return: Tuple of coordinates if valid, otherwise False.
     """
-   # if player_coordinate_x.isdigit() and player_coordinate_y.isdigit():
     x = int(player_coordinate_x)
     y = int(player_coordinate_y)
     if x in (0, 1, 2) and y in (0, 1, 2):
@@ -70,6 +64,7 @@ def verify_coordinate(player_coordinate_x: str, player_coordinate_y: str, game_p
             return x, y
         else:
             stdscr.addstr(8, 0,"Cell already taken. Choose another coordinate.")
+            stdscr.getch()
     return False
 
 
@@ -77,9 +72,9 @@ def display_game_plate(game_plate, stdscr):
     start_vertical = 3
     for i, row in enumerate(game_plate):
         line = " | ".join(str(cell) if cell != 0 else " " for cell in row)
-        stdscr.addstr(start_vertical + i * 2, 0, line)  # Chaque ligne occupe deux lignes (pour pouvoir mettre un séparateur entre)
+        stdscr.addstr(start_vertical + i * 2, 25, line)  # Chaque ligne occupe deux lignes (pour pouvoir mettre un séparateur entre)
         if i < 2:
-            stdscr.addstr(start_vertical + i * 2 + 1, 0, "-" * 10)
+            stdscr.addstr(start_vertical + i * 2 + 1, 25, "-" * 10)
     stdscr.refresh() 
 
 def check_win_condition(game_plate):

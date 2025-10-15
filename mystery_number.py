@@ -43,7 +43,7 @@ def mystery_number(player: str, stdscr) -> []:
             stdscr.clear()
             stdscr.addstr(1, 0, "Type a number between 1 and 100\n")
             curses.echo()
-            stdscr.refresh()
+            stdscr.getch()
             try:
                 user_number = stdscr.getstr(2, 0).decode("utf-8")
             except curses.error:
@@ -52,7 +52,6 @@ def mystery_number(player: str, stdscr) -> []:
             if not check_special_characters(user_number):
                 force_counter += 1
                 stdscr.addstr(3, 0, "Press a key to continue")
-                stdscr.refresh()
                 stdscr.getch()
                 stdscr.clear()
                 break
@@ -71,7 +70,6 @@ def mystery_number(player: str, stdscr) -> []:
             if user_number == random_number:
                 stdscr.addstr(3, 0, "You found the mystery number! Congrats")
                 stdscr.addstr(4, 0, "Press any key to continue")
-                stdscr.refresh()
                 stdscr.getch()
                 counter += 1
                 win = 1

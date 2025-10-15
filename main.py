@@ -88,12 +88,14 @@ def check_win(game_result: [], stdscr):
         return True
 
     elif game_result[0] == -1:
-        print("""You loose because you doesn't
+        stdscr.addstr(4, 0, """You loose because you doesn't
             find the number before the last attempt""")
+        stdscr.getch()
         user_manager.add_fail(game_result[2])
         return False
     elif game_result[0] == -2:
-        print("You loose because you are a monkey")
+        stdscr.addstr(4, 0, "You loose because you are a monkey")
+        stdscr.getch()
         user_manager.add_fail(game_result[2])
         return False
 
