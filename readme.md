@@ -33,6 +33,10 @@ This is a simple game where you have to play Tic Tac Toe against the computer.
 The computer will randomly choose a position to play.
 The game will tell you if you win, lose or if it's a tie.
 
+### 4; Snake (Work in progress)
+Control a snake in order to eat apples
+The more apples you eat, the greater the snake becomes.
+Be careful not to bite your tail.
 ### User manager
 
 In the main menu, you can choose to manage users.
