@@ -265,7 +265,6 @@ def users_menu(stdscr):
             # stdscr.clear()
             stdscr.addstr(9, 0, "Users list:\n")
             get_all_users(stdscr)
-            stdscr.refresh()
             stdscr.addstr(15, 0, "Press any key to continue")
             stdscr.getch()
         if manage_choice == 1:
@@ -309,10 +308,14 @@ def users_menu(stdscr):
             curses.noecho()
             delete_user(username, stdscr)
         if manage_choice == 5:
-            get_all_users(stdscr)
-            username = stdscr.addstr(10, 0, " Type user's username you want\n")
-            curses.echo()
-            username = stdscr.getstr(15, 0).decode("utf-8")
-            get_user_info(username, stdscr)
+            title = "Wich user want you to show"
+            options = []
+            with open("users.json") as users:
+                tab = json.load(users)
+                if tab:
+                    for p in tab:options.append(p['username'])
+            _, index = pick(options, title, screen=stdscr)
+            # stdscr.addstr(9, 0, f"{username}")
+            get_user_info(options[index], stdscr)
         if manage_choice == 6:
             return "main"
