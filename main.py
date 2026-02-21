@@ -105,7 +105,9 @@ def main(stdscr):
         utils.init_json_files()
     running = True
     while running:
-        title = "Welcome to the game center"
+        title = """
+        🎰 Python Mini Games Console 🎲
+        """
         options = ["Start", "Users menu", "Quit"]
         _, user_choice = pick(options, title, screen=stdscr)
         if user_choice == 0:
